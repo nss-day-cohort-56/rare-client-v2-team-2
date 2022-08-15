@@ -1,11 +1,6 @@
-// need text input for comment.content
-// ned submit button  
-// onSubmit do POST - POST needs content, user_id, post_id
-// navigate to comments/post_id
 import { saveNewComment } from "../../managers/CommentManager"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
-import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
 export const CommentForm = () => {

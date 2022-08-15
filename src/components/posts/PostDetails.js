@@ -46,7 +46,7 @@ export const PostDetails = ({ userId }) => {
         <Link to={`/posts/${postId}/comments`} className="card-footer-item">View Comments</Link>
         <Link to={`/posts/${postId}/add-comment`} className="card-footer-item">Add Comments</Link>
         {
-          userId === post.user?.id ? <Link to={`/editpost/${postId}`} className="card-footer-item">Edit</Link> : <></>
+          parseInt(userId) === post.user?.id ? <Link to={`/posts/${postId}/edit`} className="card-footer-item">Edit</Link> : <></>
         }
       </footer>
     </div>

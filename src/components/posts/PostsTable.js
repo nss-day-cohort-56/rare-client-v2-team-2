@@ -15,7 +15,7 @@ export const PostsTable = ({ posts, deleteClickEvent }) => {
     <tbody>
       {
         posts.map(post => {
-          return <tr>
+          return <tr key={post.id}>
             <td><Link to={`/posts/${post.id}`}>{post.title}</Link></td>
             <td>{post.publication_date}</td>
             <td>{post.category?.label}</td>
@@ -23,7 +23,7 @@ export const PostsTable = ({ posts, deleteClickEvent }) => {
               {
                 deleteClickEvent ?
                   <div className="buttons">
-                    <button className="button is-warning" onClick={() => navigate(`/editpost/${post.id}`)}>edit</button>
+                    <button className="button is-warning" onClick={() => navigate(`/posts/${post.id}/edit`)}>edit</button>
                     <button className="button is-danger" onClick={() => { deleteClickEvent(post.id) }}>delete</button>
                   </div> : <></>
               }

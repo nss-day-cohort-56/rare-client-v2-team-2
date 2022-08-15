@@ -33,10 +33,12 @@ export const CategoriesList = () => {
               categories.map(category => (
                 <tr key={category.id}>
                   <td>{category.label}</td>
-                  <td><div className="buttons">
-                    <button className="button is-warning" onClick={() => { setEditCategory(category) }}>edit</button>
-                    <button className="button is-danger" onClick={() => { handleDelete(category.id) }}>delete</button>
-                  </div></td>
+                  <td>
+                    <div className="buttons">
+                      <button className="button is-warning" onClick={() => { setEditCategory(category) }}>edit</button>
+                      <button className="button is-danger" onClick={() => { handleDelete(category.id) }}>delete</button>
+                    </div>
+                  </td>
                 </tr>
               ))
             }

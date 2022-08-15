@@ -6,7 +6,7 @@ export const Login = ({ setToken, setUserId }) => {
   const username = useRef()
   const password = useRef()
   const navigate = useNavigate()
-  const [isUnsuccessful, setisUnsuccessful] = useState(false)
+  const [isUnsuccessful, setIsUnsuccessful] = useState(false)
 
   const handleLogin = (e) => {
     e.preventDefault()
@@ -18,12 +18,13 @@ export const Login = ({ setToken, setUserId }) => {
 
     loginUser(user).then(res => {
       if ("valid" in res && res.valid) {
+        
         setToken(res.token)
         setUserId(res.user_id)
-        navigate("/")
+        navigate("/posts")
       }
       else {
-        setisUnsuccessful(true)
+        setIsUnsuccessful(true)
       }
     })
   }

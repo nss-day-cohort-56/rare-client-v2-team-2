@@ -1,18 +1,16 @@
-import { useState } from "react"
-import { createTag } from "../../managers/TagManager"
+import { createTag, updateTag } from "../../managers/TagManager"
 
-export const TagForm = ({ loadTags, initialTag = { label: '' } }) => {
-
-  const [tag, setTag] = useState(initialTag)
-
+export const TagForm = ({ loadTags, tag, setTag }) => {
   const saveTagEvent = (event) => {
     event.preventDefault()
-
-    createTag(tag)
-      .then((data) => {
+    if (tag.id) {
+      updateTag(tag).then(loadTags)
+    } else {
+      createTag(tag).then((data) => {
         loadTags(data)
         setTag({ label: '' })
       })
+    }
   }
 
   return (
