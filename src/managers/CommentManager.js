@@ -26,3 +26,12 @@ export const deleteComment = (commentId) => {
     }
   })
 }
+
+export const GetComments = () => {
+  return fetch("http://localhost:8000/comments", {
+    headers: {
+      'Authorization': `Token ${localStorage.getItem('auth_token')}`
+    }
+}).then(res => res.json)
+}
+
