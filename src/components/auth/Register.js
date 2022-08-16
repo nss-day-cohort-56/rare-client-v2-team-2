@@ -30,6 +30,7 @@ export const Register = ({ setToken, setUserId }) => {
       registerUser(newUser)
         .then(res => {
           if ("valid" in res && res.valid) {
+            localStorage.setItem('is_staff', res.is_staff)
             setToken(res.token)
             setUserId(res.user_id)
             navigate("/")
