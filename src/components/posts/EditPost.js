@@ -95,7 +95,7 @@ export const EditPost = () => {
               </div>
             </div>
             <div className="field">
-              <label htmlFor="category_id" className="label">Category: </label>
+              <label htmlFor="category" className="label">Category: </label>
               <div className="control">
                 <div className="select">
                   <select name="category_id"
