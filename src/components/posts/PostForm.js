@@ -10,6 +10,12 @@ export const PostForm = () => {
   const [post, setPost] = useState({})
   const [tagsForPost, setTagsForPost] = useState([])
   let navigate = useNavigate()
+  const [staff, setStaff] = useState(false)
+
+  useEffect(() => {
+    let isStaff=localStorage.getItem("is_staff")
+    setStaff(isStaff)
+  }, [])
 
   useEffect(() => {
     getAllCategories().then(categoriesData => setCategories(categoriesData))
@@ -37,7 +43,12 @@ export const PostForm = () => {
     }
 
     createPost(postData).then((post) => {
-      navigate(`posts/${post.id}`)
+      if(staff === 'true') {
+        navigate(`posts/${post.id}`)
+      }
+      else {
+        navigate(`/my-posts`)
+      }
     })
   }
 
