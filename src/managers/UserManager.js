@@ -23,6 +23,9 @@ export const updateUser = (id, user) => {
             'Authorization': `Token ${localStorage.getItem('auth_token')}`
         },
         body: JSON.stringify(user)
-    }).then((res) => localStorage.setItem("is_staff", res.is_staff))
+    }).then((res) => {
+        if (res.id == id){
+            localStorage.setItem("is_staff", res.is_staff)}
+        })
 }
 
