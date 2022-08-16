@@ -58,6 +58,7 @@ export const UserDetail = () => {
                         <div value={rareUser.id}>Date Joined: {Date(joinDate)}</div>
                         <div value={rareUser.id}>Is Active? {isActive}</div>
                     </div>
+                    <button>Subscribe</button>
                     <button className="button" onClick={() => {
                         navigate(`/users`)
                     }}>Back To Users</button>
