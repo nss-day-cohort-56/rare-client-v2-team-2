@@ -94,7 +94,7 @@ export const PostForm = () => {
               <div className="control">
                 <div className="select">
                   <select name="category_id"
-                    value={post.category_id}
+                    value={parseInt(post.category_id)}
                     onChange={handleChange}>
                     <option value="0">Select a category</option>
                     {categories.map(c => (

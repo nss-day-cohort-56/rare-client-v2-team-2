@@ -58,7 +58,16 @@ export const getCurrentUsersPosts = () => {
 }
 
 export const getPostsByCategory = (id) => {
-  return fetch(`http://localhost:8000/posts?category_id=${id}`, {
+  return fetch(`http://localhost:8000/posts?category=${id}`, {
+    headers: {
+      'Authorization': `Token ${localStorage.getItem('auth_token')}`
+    }
+  })
+    .then(res => res.json())
+}
+
+export const getPostsByUser = (id) => {
+  return fetch(`http://localhost:8000/posts?user=${id}`, {
     headers: {
       'Authorization': `Token ${localStorage.getItem('auth_token')}`
     }
