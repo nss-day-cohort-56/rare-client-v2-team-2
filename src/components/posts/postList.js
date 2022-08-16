@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { getAllCategories } from "../../managers/CategoryManager"
-import { getAllPosts, getPostsByCategory, getPostsByTitle, getPostsByUser } from "../../managers/PostManager"
+import { getAllPosts, getPostsByCategory, getPostsByTag, getPostsByTitle, getPostsByUser } from "../../managers/PostManager"
+import { getAllTags } from "../../managers/TagManager"
 import { getAllUsers } from "../../managers/UserManager"
 import { PostsTable } from "./PostsTable"
 
@@ -13,15 +14,19 @@ export const PostList = () => {
   const [chosenUser, setChosenUser] = useState(0)
   const [userList, setUsers] = useState([])
   const [searchTerms, setSearchTerms] = useState("")
+  const [chosenTag, setChosenTag] = useState(0)
+  const [tagList, setTagList] = useState([])
 
   const loadPosts = () => getAllPosts().then(data => setPosts(data))
   const loadUsers = () => getAllUsers().then(data => setUsers(data))
   const loadCategories = () => getAllCategories().then(data => setCategories(data))
+  const loadTags = () => getAllTags().then(data => setTagList(data))
 
   useEffect(() => {
     loadPosts()
     loadUsers()
     loadCategories()
+    loadTags()
   }, [])
 
   useEffect(
@@ -37,6 +42,21 @@ export const PostList = () => {
         }
     },
     [chosenCat, posts]
+)
+
+useEffect(
+  () => {
+      if(chosenTag === 0) {
+          setFiltered(posts)
+      }
+      else {
+          getPostsByTag(chosenTag)
+              .then((data) => {
+                  setFiltered(data)
+              })
+      }
+  },
+  [chosenTag, posts]
 )
 
 useEffect(
@@ -88,6 +108,15 @@ useEffect(
         <option value="0">Filter by User...</option>
         {userList.map(user => {
             return <option value={`${user.id}`}>{user?.user?.first_name}</option>
+        })}
+            </select>
+        <select className="tagFilter" onChange={(event) => {
+                            let chosenT = event.target.value
+                            setChosenTag(parseInt(chosenT))
+                        }}>
+        <option value="0">Filter by Tag...</option>
+        {tagList.map(tag => {
+            return <option value={`${tag.id}`}>{tag.label}</option>
         })}
             </select>
         <div className="searchBar">
