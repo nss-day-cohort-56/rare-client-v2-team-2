@@ -1,1 +1,6 @@
 @import 'bulma/css/bulma.css';
+
+.reaction {
+    height: 15rem;
+    width: 15rem;
+}

@@ -28,7 +28,7 @@ export const PostDetails = ({ userId }) => {
         <div className="media">
           <div className="media-left">
             <span className="icon is-large">
-              <img src={post?.user?.profile_image_url} alt={post.title} onClick={() => {navigate(`/users/${post?.user?.id}`)}} style= {{cursor:"pointer"}}/>
+              <img src={post?.user?.profile_image_url} alt={post.title} onClick={() => { navigate(`/users/${post?.user?.id}`) }} style={{ cursor: "pointer" }} />
             </span>
           </div>
           <div className="media-content">
@@ -41,8 +41,16 @@ export const PostDetails = ({ userId }) => {
           {post.content}
           <hr />
           <time >{post.publication_date}</time>
+          <div>
+            {
+              post.reactions?.map(reaction => {
+                return <img className="reaction" key={`reaction--${reaction.id}`} src={reaction?.image_url} alt={reaction?.label} />
+              })
+            }
+          </div>
         </div>
       </div>
+
       <footer className="card-footer">
         <Link to={`/posts/${postId}/comments`} className="card-footer-item">View Comments</Link>
         <Link to={`/posts/${postId}/add-comment`} className="card-footer-item">Add Comments</Link>
