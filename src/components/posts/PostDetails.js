@@ -28,7 +28,7 @@ export const PostDetails = ({ userId }) => {
         <div className="media">
           <div className="media-left">
             <span className="icon is-large">
-              <img src={post?.user?.profile_image_url} alt={post.title} onClick={() => {navigate(`/users/${post?.user?.id}`)}} style= {{cursor:"pointer"}}/>
+              <img src={post?.user?.profile_image_url} alt={post.title} onClick={() => {navigate(`/authors/${post?.user?.id}`)}} style= {{cursor:"pointer"}}/>
             </span>
           </div>
           <div className="media-content">
