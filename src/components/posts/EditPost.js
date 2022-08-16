@@ -22,12 +22,13 @@ export const EditPost = () => {
     getAllTags().then(data => setTags(data))
   }, [postId])
 
-  const updateTags = (tagId) => {
+  const updateTags = (tagId, e) => {
     const tagsCopy = [...tagsForPost]
-    const index = post.tags.indexOf(tagId)
-    if (index < 0) {
+    
+    if (e.target.checked) {
       tagsCopy.push(tagId)
     } else {
+      const index = tagsCopy.indexOf(tagId)
       tagsCopy.splice(index, 1)
     }
     setTagsForPost(tagsCopy)
@@ -35,8 +36,12 @@ export const EditPost = () => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault()
+    const postData = {
+      ...post,
+      tags: tagsForPost
+    }
 
-    updatePost(postId, post).then((post) => {
+    updatePost(postId, postData).then((post) => {
       navigate(`/posts/${postId}`)
     })
   }
@@ -90,7 +95,7 @@ export const EditPost = () => {
               </div>
             </div>
             <div className="field">
-              <label htmlFor="category_id" className="label">Category: </label>
+              <label htmlFor="category" className="label">Category: </label>
               <div className="control">
                 <div className="select">
                   <select name="category_id"
@@ -117,8 +122,8 @@ export const EditPost = () => {
                       <label className="checkbox" htmlFor={tag.label}>
                         <input type="checkbox" name={tag.label}
                           checked={tagsForPost.includes(tag.id)}
-                          onChange={() => {
-                            updateTags(tag.id)
+                          onChange={(e) => {
+                            updateTags(tag.id, e)
                           }} />
                         {tag.label}
                       </label>

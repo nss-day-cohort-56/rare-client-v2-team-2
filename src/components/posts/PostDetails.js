@@ -1,15 +1,32 @@
 import { useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
-import { getPostById } from "../../managers/PostManager"
+import { Link, useNavigate, useParams } from "react-router-dom"
+import { deletePost, getPostById, updatePost } from "../../managers/PostManager"
 import { FaUserCircle } from 'react-icons/fa'
 
 export const PostDetails = ({ userId }) => {
   const [post, setPost] = useState({})
+  const [tagsForPost, setTags] = useState([])
   const { postId } = useParams()
+  let navigate = useNavigate()
+  const [staff, setStaff] = useState(false)
+
+  useEffect(() => {
+    let isStaff=localStorage.getItem("is_staff")
+    setStaff(isStaff)
+  }, [])
 
   useEffect(() => {
     getPostById(postId).then(postData => setPost(postData))
   }, [postId])
+
+  useEffect(() => {
+    let tags = []
+    post?.tags?.map(tag => {
+     tags.push(parseInt(tag.id))
+    })
+
+    setTags(tags)
+  }, [post])
 
   return <section className="section">
     <div className="card">
@@ -27,12 +44,12 @@ export const PostDetails = ({ userId }) => {
         <div className="media">
           <div className="media-left">
             <span className="icon is-large">
-              <FaUserCircle size={'3rem'} />
+              <img src={post?.user?.profile_image_url} alt={post.title} onClick={() => {navigate(`/users/${post?.user?.id}`)}} style= {{cursor:"pointer"}}/>
             </span>
           </div>
           <div className="media-content">
-            <p className="title is-4">{post.user?.first_name} {post.user?.last_name}</p>
-            <p className="subtitle is-6">@{post.user?.username}</p>
+            <p className="title is-4">{post?.user?.user?.first_name} {post?.user?.user?.last_name}</p>
+            <p className="subtitle is-6">@{post?.user?.user?.username}</p>
           </div>
         </div>
 
@@ -47,6 +64,30 @@ export const PostDetails = ({ userId }) => {
         <Link to={`/posts/${postId}/add-comment`} className="card-footer-item">Add Comments</Link>
         {
           parseInt(userId) === post.user?.id ? <Link to={`/posts/${postId}/edit`} className="card-footer-item">Edit</Link> : <></>
+        }
+        {
+          staff === 'true' ? <>
+          { post?.approved === false ? <>
+          <button style={{background:"#2CB71E"}} onClick={(evt) => {
+           evt.preventDefault()
+           const postData = {
+             ...post,
+             category_id: post.category.id,
+             tags: tagsForPost,
+             approved: true
+           }
+       
+           updatePost(postId, postData).then(() => {
+             navigate(`/posts`)
+           })
+        }}>Approve Post</button>
+        <button style={{background:"#D1483F"}} onClick={() => {
+          deletePost(postId).then(() => {
+            navigate(`/posts`)
+          })
+        }}>Deny Post</button>
+          </> : "" }
+          </> : ""
         }
       </footer>
     </div>

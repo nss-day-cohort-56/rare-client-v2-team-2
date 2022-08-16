@@ -1,10 +1,12 @@
 import { createTag, updateTag } from "../../managers/TagManager"
 
 export const TagForm = ({ loadTags, tag, setTag }) => {
+  
   const saveTagEvent = (event) => {
     event.preventDefault()
     if (tag.id) {
       updateTag(tag).then(loadTags)
+      setTag({ label: '' })
     } else {
       createTag(tag).then((data) => {
         loadTags(data)
@@ -37,6 +39,11 @@ export const TagForm = ({ loadTags, tag, setTag }) => {
         onClick={(evt) => saveTagEvent(evt)}
         className="button is-primary">
         Save
+      </button>
+      <button
+      onClick={loadTags}
+        className="button is-warning">
+        Cancel
       </button>
     </form>
   )

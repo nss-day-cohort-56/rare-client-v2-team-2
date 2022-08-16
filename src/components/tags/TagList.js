@@ -6,6 +6,7 @@ export const TagList = () => {
   const [tags, setTags] = useState([])
   const [editTag, setEditTag] = useState({ label: '' })
 
+  const isStaff = localStorage.getItem("is_staff") === "true"
 
   const loadTags = () => {
     getAllTags().then(tagsData => setTags(tagsData))
@@ -21,31 +22,40 @@ export const TagList = () => {
 
   return <section className="section">
     <div className="columns">
-      <div className="column">
-        <table className="table is-fullwidth">
-          <thead>
-            <tr>
-              <th>Tags</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              tags.map(tag => (
-                <tr key={tag.id}>
-                  <td>{tag.label}</td>
-                  <td>
-                    <div className="buttons">
-                      <button className="button is-warning" onClick={() => { setEditTag(tag) }}>edit</button>
-                      <button className="button is-danger" onClick={() => { handleDelete(tag.id) }}>delete</button>
-                    </div>
-                  </td>
+      {
+        isStaff
+          ?
+          <div className="column">
+            <table className="table is-fullwidth">
+              <thead>
+                <tr>
+                  <th>Tags</th>
+                  <th></th>
                 </tr>
-              ))
-            }
-          </tbody>
-        </table>
-      </div>
+              </thead>
+              <tbody>
+                {
+                  tags.map(tag => (
+                    <tr key={tag.id}>
+                      <td>{tag.label}</td>
+                      <td>
+                        <div className="buttons">
+                          <button className="button is-warning" onClick={() => { setEditTag(tag) }}>edit</button>
+                          <button className="button is-danger" onClick={() => {
+                            const confirmBox = window.confirm("Do you really want to delete this tag?")
+                            if (confirmBox)
+                              handleDelete(tag.id)
+                          }}>delete</button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+          </div>
+          : ""
+      }
       <div className="column">
         <TagForm loadTags={loadTags} tag={editTag} setTag={setEditTag} />
       </div>
