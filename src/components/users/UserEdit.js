@@ -16,7 +16,7 @@ export const UserEdit = () => {
         <>
             <section key={`user--${editUser.id}`}className="section">
                     <article className="panel is-info">
-                        <h2 className="panel-heading">Update User</h2>
+                        <h2 className="panel-heading">Change Access for User: {editUser?.user?.username}</h2>
                         <div className="panel-block">
                             <form style={{ width: "100%" }}>
                                 <div className="field">
@@ -46,9 +46,9 @@ export const UserEdit = () => {
 
             <button type="submit"
                 onClick={() => {
-                        navigate(`/users/${userId}`)
+                        navigate(`/users`)
                 }} 
-                className="button is-success">Cancel
+                className="button is-success">Back
             </button>
         </>
     )
