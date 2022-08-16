@@ -1,8 +1,8 @@
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import Logo from "./rare.jpeg"
 
-export const NavBar = ({ token, setToken }) => {
+export const NavBar = ({ isStaff, token, setToken }) => {
   const navigate = useNavigate()
   const navbar = useRef()
   const hamburger = useRef()
@@ -36,7 +36,13 @@ export const NavBar = ({ token, setToken }) => {
                   <Link to="/my-posts" className="navbar-item">My Posts</Link>
                   <Link to="/tags" className="navbar-item">Tag Management</Link>
                   <Link to="/posts/create" className="navbar-item">New Post</Link>    
-                  <Link to="/categories" className="navbar-item">Category Management</Link>      
+                  <Link to="/categories" className="navbar-item">Category Management</Link> 
+                  {
+                    isStaff
+                    ?
+                    <Link to="/users" className="navbar-item">Users</Link>
+                    : ""
+                  }     
               </>
               :
               ""
