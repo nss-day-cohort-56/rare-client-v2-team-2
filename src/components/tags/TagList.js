@@ -19,10 +19,12 @@ export const TagList = ({ isStaff }) => {
     loadTags()
   }, [])
 
+  console.log(isStaff)
+
   return <section className="section">
     <div className="columns">
 
-      {isStaff
+      {isStaff 
         ? <div className="column">
           <table className="table is-fullwidth">
             <thead>
@@ -53,7 +55,7 @@ export const TagList = ({ isStaff }) => {
           </table>
         </div>
         : ""
-}
+      }
 
       <div className="column">
         <TagForm loadTags={loadTags} tag={editTag} setTag={setEditTag} />
