@@ -24,7 +24,7 @@ export const PostsTable = ({ posts, deleteClickEvent }) => {
     <tbody>
       {
         posts.map(post => {
-          if(post?.approved !== false)
+          if(post?.approved !== false) {
           return <tr key={post.id}>
             <td><Link to={`/posts/${post.id}`}>{post.title}</Link></td>
             <td>{post.publication_date}</td>
@@ -38,7 +38,8 @@ export const PostsTable = ({ posts, deleteClickEvent }) => {
                   </div> : <></>
               }
             </td>
-          </tr>
+          </tr> 
+          }
           else {
             if(staff === 'true') {
               return <tr key={post.id}>
