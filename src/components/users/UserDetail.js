@@ -1,6 +1,7 @@
 import { getUserById, updateUser } from "../../managers/UserManager";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { getUserSubscribers } from "../../managers/SubscriptionManager";
 
 
 export const UserDetail = () => {
@@ -9,6 +10,8 @@ export const UserDetail = () => {
     const navigate = useNavigate()
     const [imageString, setString] = useState("")
     const [profileImage, setImage] = useState("")
+    const [userSubscriptions, setUserSubscriptions] = useState([])
+    const [subscriberCount, setSubscriberCount] = useState(0)
 
     useEffect(() => {
         getUserById(userId)
@@ -40,6 +43,16 @@ export const UserDetail = () => {
         },
         [rareUser]
     )
+
+    useEffect(() => {
+        getUserSubscribers(userId).then(setUserSubscriptions)
+    }, [])
+
+    useEffect(() => {
+        if(userSubscriptions.length !== 0) {
+            setSubscriberCount(userSubscriptions.length)
+        }
+    }, [userSubscriptions])
 
     // useEffect(() => {console.log(rareUser)}, [])
 
@@ -94,6 +107,7 @@ export const UserDetail = () => {
                         <div value={rareUser.id}>Profile Type: {profileType}</div>
                         <div value={rareUser.id}>Date Joined: {Date(joinDate)}</div>
                         <div value={rareUser.id}>Is Active? {isActive}</div>
+                        <div>Subscriber Count: {userSubscriptions ? subscriberCount : 0}</div>
                     </div>
                     <button className="button" onClick={() => {
                         navigate(`/users`)

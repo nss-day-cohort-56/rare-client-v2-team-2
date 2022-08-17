@@ -43,6 +43,7 @@ export const ApplicationViews = ({ isStaff, token, setToken, setUserId, userId }
       <Route path="/posts/:postId" element={<PostDetails userId={userId} />} />
       <Route path="/posts/:postId/add-comment" element={<CommentForm />} />
       <Route path="/posts/:postId/comments/:commentId/edit" element={<CommentEdit />} />
+      <Route path="/users/:userId" element={<UserDetail />} />
       {
         isStaff === true
           ? <Route path="/users">
