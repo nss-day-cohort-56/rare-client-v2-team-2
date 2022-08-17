@@ -41,6 +41,13 @@ export const UserDetail = () => {
     let bio = rareUser?.bio
     let profileType = staff(rareUser?.user)
     let isActive = active(rareUser?.user)
+
+    const handleImageChange = (e) => {
+        let newProfileData = {
+          ...rareUser,
+          profile_image_url: e.target.files[0]
+        }
+    }
     
 
     return( 
@@ -50,6 +57,11 @@ export const UserDetail = () => {
                 <section className="userBox" key={rareUser.id}>
                     <div className="user" >
                         <img src={profileImg} alt="userImage" className="userImage" />
+                        <p>
+                        <input type="file"
+                            id="image"
+                            accept="image/png, image/jpeg"  onChange={(event) => {handleImageChange(event)}} required/>
+                        </p>
                         <div value={rareUser.id}>Bio: {bio}</div>
                         <div value={rareUser.id}>Name: {firstName} {lastName}</div>
                         <div value={rareUser.id}>User Name: {userName}</div>
