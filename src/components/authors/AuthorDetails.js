@@ -24,15 +24,14 @@ export const AuthorDetails = () => {
     const subObj = { author: authorId }
     const subscribe = (subObj) => {
         subscribeToAuthor(subObj).then(setTimeout(200)).then(
-            getSubscriptionStatus(authorId).then(setSub).then(setTimeout(200))
+            getSubscriptionStatus(authorId).then(setSub).then(window.location.reload())
         )
     }
     const unsubscribe = () => {
         unsubscribeToAuthor(subId).then(setTimeout(200)).then(
-            getSubscriptionStatus(authorId).then(setSub).then(setTimeout(200))
+            getSubscriptionStatus(authorId).then(setSub).then(window.location.reload())
         )
     }
-
     let userName = rareUser?.user?.username
     let firstName = rareUser?.user?.first_name
     let lastName = rareUser?.user?.last_name
