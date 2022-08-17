@@ -13,6 +13,7 @@ import { CommentForm } from "../components/comments/CommentForm"
 import { CommentsList } from "../components/comments/CommentList"
 import { Users } from "../components/users/UserList"
 import { UserDetail } from "../components/users/UserDetail"
+import { UserEdit } from "../components/users/UserEdit"
 import { CommentEdit } from "../components/comments/CommentEdit"
 
 
@@ -39,6 +40,7 @@ export const ApplicationViews = ({ isStaff, token, setToken, setUserId, userId }
             ? <Route path="/users">
               <Route index element={<Users />} />
               <Route path=":userId" element={<UserDetail />} />
+              <Route path=":userId/edit" element={<UserEdit />} />
             </Route>
             : <Route path="/users" element={<Navigate to="/posts" replace />} />
         }
