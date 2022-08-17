@@ -37,9 +37,13 @@ export const Users = () => {
                         <div value={rareUser.id}>Name: {firstName} {lastName}</div>
                         <div value={rareUser.id}>Display Name: {userName}</div>
                         <div value={rareUser.id}>Profile Type: {profileType}</div>
+
                         </div>
                         <Link to={`/users/${rareUser.id}`}>
                             <div value={rareUser.id}>See Details</div>
+                        </Link>
+                        <Link to={`/users/${rareUser.id}/edit`}>
+                            <div value={rareUser.id}>Edit User</div>
                         </Link>
                     </section>
                 })}
