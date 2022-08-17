@@ -64,14 +64,14 @@ export const PostDetails = ({ userId }) => {
           <hr />
           <time >{post.publication_date}</time>
           <div>
-            {/* {
+            {
               reactions.map(reaction => {
                 return <span>
                   <img className="reaction" key={`reaction--${reaction.id}`} src={reaction.image_url} alt={reaction.label} />
                   Count:
                 </span>
               })
-            } */}
+            }
           </div>
         </div>
       </div>
