@@ -28,3 +28,14 @@ export const subscribeToAuthor = (authorId) => {
         }
     }).then(res => res.json())
   }
+
+  export const getUserSubscribers = (id) => {
+    return fetch(`http://localhost:8000/subscribe?authorsub=${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${localStorage.getItem('auth_token')}`
+        }
+    }).then(res => res.json())
+  }
+
