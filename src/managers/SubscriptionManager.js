@@ -9,11 +9,11 @@ export const subscribeToAuthor = (authorId) => {
     }).then(res => res.json())
   }
 
-  export const unsubscribeToAuthor = (id) => {
-    return fetch(`http://localhost:8000/subscribe/${id}`, {
+  export const unsubscribeToAuthor = (subId) => {
+    return fetch(`http://localhost:8000/subscribe/${subId}`, {
         method: 'PUT',
         headers: {
-            'Content-Type': 'application/json',
+
             'Authorization': `Token ${localStorage.getItem('auth_token')}`
         },
     })
