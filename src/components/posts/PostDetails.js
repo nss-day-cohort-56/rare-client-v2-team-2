@@ -84,7 +84,6 @@ export const PostDetails = ({ userId }) => {
              tags: tagsForPost,
              approved: true
            }
-       
            updatePost(postId, postData).then(() => {
              navigate(`/posts`)
            })
@@ -94,7 +93,11 @@ export const PostDetails = ({ userId }) => {
             navigate(`/posts`)
           })
         }}>Deny Post</button>
-          </> : "" }
+          </> : <button style={{background:"#D1483F"}} onClick={() => {
+          deletePost(postId).then(() => {
+            navigate(`/posts`)
+          })
+        }}>Unapprove Post</button> }
           </> : ""
         }
       </footer>

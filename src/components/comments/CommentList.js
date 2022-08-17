@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { deleteComment, getCommentsByPostId } from '../../managers/CommentManager' 
 import { FaTrashAlt, FaUserCircle, FaEdit } from 'react-icons/fa';
 
@@ -7,6 +7,7 @@ import { FaTrashAlt, FaUserCircle, FaEdit } from 'react-icons/fa';
 export const CommentsList = ({ userId }) => {
   const [comments, setComments] = useState([])
   const { postId } = useParams()
+  let Navigate = useNavigate()
 
   const loadComments = useCallback(() => {
     getCommentsByPostId(postId).then((commentsData) => {
@@ -52,7 +53,7 @@ export const CommentsList = ({ userId }) => {
                 parseInt(userId) === comment.author_id ?
                   <div className="media-right">
                     <span className="icon">
-                      <FaEdit />
+                      <FaEdit onClick={(() => Navigate(`/posts/${postId}/comments/${comment.id}/edit`))} />
                     </span>
                     <span className="icon">
                       <FaTrashAlt onClick={() => handleDelete(comment.id)} />
