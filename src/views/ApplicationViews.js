@@ -13,29 +13,38 @@ import { CommentForm } from "../components/comments/CommentForm"
 import { CommentsList } from "../components/comments/CommentList"
 import { Users } from "../components/users/UserList"
 import { UserDetail } from "../components/users/UserDetail"
+
+import { AuthorDetails } from "../components/authors/AuthorDetails"
+
 import { UserEdit } from "../components/users/UserEdit"
 import { CommentEdit } from "../components/comments/CommentEdit"
 import { DeactivatedUsers } from "../components/users/DeactivatedList"
+import { HomePage } from "../components/home/HomePage"
+
 
 
 export const ApplicationViews = ({ isStaff, token, setToken, setUserId, userId, isActive }) => {
   return <Routes>
+    
     <Route path="/login" element={<Login setToken={setToken} setUserId={setUserId} />} />
     <Route path="/register" element={<Register setToken={setToken} setUserId={setUserId} />} />
     <Route element={<Authorized token={token} isActive={isActive} />}>
       {/* Add Routes here */}
+      <Route path="" element={<HomePage />} />
       <Route path="/tags" element={<TagList />} />
 
       <Route path="/posts" element={<PostList />} />
       <Route path="/my-posts" element={<MyPost />} />
       <Route path="/posts/create" element={<PostForm />} />
       <Route path="/posts/:postId/edit" element={<EditPost />} />
+      <Route path="/authors/:authorId" element={<AuthorDetails />} />
 
       <Route path="/categories" element={<CategoriesList />} />
       <Route path="/posts/:postId/comments" element={<CommentsList userId={userId} />} />
       <Route path="/posts/:postId" element={<PostDetails userId={userId} />} />
       <Route path="/posts/:postId/add-comment" element={<CommentForm />} />
       <Route path="/posts/:postId/comments/:commentId/edit" element={<CommentEdit />} />
+      <Route path="/users/:userId" element={<UserDetail />} />
       {
           isStaff === true
             ? <>

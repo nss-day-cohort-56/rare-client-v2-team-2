@@ -37,14 +37,14 @@ export const PostDetails = ({ userId }) => {
       </header>
       <div className="card-image">
         <figure className="image">
-          <img src={post?.image_url} alt={post.title} />
+          <img src={`http://localhost:8000${post?.image_url}`} alt={post.title} />
         </figure>
       </div>
       <div className="card-content">
         <div className="media">
           <div className="media-left">
             <span className="icon is-large">
-              <img src={post?.user?.profile_image_url} alt={post.title} onClick={() => {navigate(`/users/${post?.user?.id}`)}} style= {{cursor:"pointer"}}/>
+              <img src={`http://localhost:8000${post?.user?.profile_image_url}`} alt={post.title} onClick={() => {navigate(`/authors/${post?.user?.id}`)}} style= {{cursor:"pointer"}}/>
             </span>
           </div>
           <div className="media-content">

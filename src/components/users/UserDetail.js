@@ -1,11 +1,17 @@
-import { getUserById } from "../../managers/UserManager";
+import { getUserById, updateUser } from "../../managers/UserManager";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { getUserSubscribers } from "../../managers/SubscriptionManager";
+
 
 export const UserDetail = () => {
     const [rareUser, setRareUser] = useState([])
     const { userId } = useParams()
     const navigate = useNavigate()
+    const [imageString, setString] = useState("")
+    const [profileImage, setImage] = useState("")
+    const [userSubscriptions, setUserSubscriptions] = useState([])
+    const [subscriberCount, setSubscriberCount] = useState(0)
 
     useEffect(() => {
         getUserById(userId)
@@ -30,6 +36,24 @@ export const UserDetail = () => {
         }
     }
 
+    useEffect(
+        () => {
+            let image = rareUser?.profile_image_url
+            setImage(image)
+        },
+        [rareUser]
+    )
+
+    useEffect(() => {
+        getUserSubscribers(userId).then(setUserSubscriptions)
+    }, [])
+
+    useEffect(() => {
+        if(userSubscriptions.length !== 0) {
+            setSubscriberCount(userSubscriptions.length)
+        }
+    }, [userSubscriptions])
+
     // useEffect(() => {console.log(rareUser)}, [])
 
     let userName = rareUser?.user?.username
@@ -42,6 +66,19 @@ export const UserDetail = () => {
     let profileType = staff(rareUser?.user)
     let isActive = active(rareUser?.user)
     
+    const getBase64 = (file, callback) => {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => callback(reader.result));
+        reader.readAsDataURL(file);
+    }
+    
+    const createProfilePictureString = (event) => {
+        getBase64(event.target.files[0], (base64ImageString) => {
+            setString(base64ImageString)
+    
+            // Update a component state variable to the value of base64ImageString
+        });
+    }
 
     return( 
         <>
@@ -49,7 +86,20 @@ export const UserDetail = () => {
                 <div className="userTitle">Users</div>
                 <section className="userBox" key={rareUser.id}>
                     <div className="user" >
-                        <img src={profileImg} alt="userImage" className="userImage" />
+                        <img src={`http://localhost:8000${profileImage}`} alt="userImage" className="userImage" width="400" height="500"/>
+                        <br></br>
+                        <input type="file" id="image" onChange={createProfilePictureString} />
+                        <input type="hidden" name="user_id" value={userId} />
+                        <button onClick={() => {
+                            let newUserData = {
+                                ...rareUser,
+                                image: imageString
+                            }
+                            updateUser(userId, newUserData).then(() => {
+                                getUserById(userId)
+                                .then(setRareUser)
+                            })
+                        }}>Upload</button>
                         <div value={rareUser.id}>Bio: {bio}</div>
                         <div value={rareUser.id}>Name: {firstName} {lastName}</div>
                         <div value={rareUser.id}>User Name: {userName}</div>
@@ -57,6 +107,7 @@ export const UserDetail = () => {
                         <div value={rareUser.id}>Profile Type: {profileType}</div>
                         <div value={rareUser.id}>Date Joined: {Date(joinDate)}</div>
                         <div value={rareUser.id}>Is Active? {isActive}</div>
+                        <div>Subscriber Count: {userSubscriptions ? subscriberCount : 0}</div>
                     </div>
                     <button className="button" onClick={() => {
                         navigate(`/users`)
@@ -68,3 +119,5 @@ export const UserDetail = () => {
 
 
 }
+
+
