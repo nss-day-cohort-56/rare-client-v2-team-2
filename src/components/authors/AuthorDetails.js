@@ -5,7 +5,7 @@ import { getSubscriptionStatus, subscribeToAuthor } from "../../managers/Subscri
 
 export const AuthorDetails = () => {
     const [rareUser, setRareUser] = useState([])
-    const [sub, setSub] = useState({})
+    const [sub, setSub] = useState([])
     const { authorId } = useParams()
     
     const navigate = useNavigate()
@@ -16,10 +16,10 @@ export const AuthorDetails = () => {
         getSubscriptionStatus(authorId)
             .then(setSub)
     }, [authorId])
-
-    const subscribe = (authorId) => {
-        const payload = {"author": authorId}
-        subscribeToAuthor(payload)
+    const subObj = {author: authorId}
+    const subscribe = (subObj) => {
+        
+        subscribeToAuthor(subObj)
     }
 
     // const staff = (selectedUser) => {
@@ -55,7 +55,7 @@ export const AuthorDetails = () => {
     return( 
         <>
             <div className="user_container">
-                <div className="userTitle">Users</div>
+                <div className="userTitle">Author</div>
                 <section className="userBox" key={rareUser.id}>
                     <div className="user" >
                         <img src={profileImg} alt="userImage" className="userImage" />
@@ -67,7 +67,9 @@ export const AuthorDetails = () => {
                         <div value={rareUser.id}>Date Joined: {Date(joinDate)}</div>
                         <div value={rareUser.id}>Is Active? {isActive}</div> */}
                     </div>
-                    <>{sub.created_on && !sub.ended_on ? <button >UnSubscribe</button> : <button onClick={subscribe()}>Subscribe</button>}</>
+                    <>{sub ? <button >UnSubscribe</button> :
+                    
+                    <button onClick={() => {subscribe(subObj)}}>Subscribe</button>}</>
                     <button className="button" onClick={() => {
                         navigate(`/posts`)
                     }}>Back To Posts</button>
