@@ -11,7 +11,7 @@ export const PostDetails = ({ userId }) => {
   const [staff, setStaff] = useState(false)
 
   useEffect(() => {
-    let isStaff=localStorage.getItem("is_staff")
+    let isStaff = localStorage.getItem("is_staff")
     setStaff(isStaff)
   }, [])
 
@@ -22,7 +22,7 @@ export const PostDetails = ({ userId }) => {
   useEffect(() => {
     let tags = []
     post?.tags?.map(tag => {
-     tags.push(parseInt(tag.id))
+      tags.push(parseInt(tag.id))
     })
 
     setTags(tags)
@@ -60,7 +60,10 @@ export const PostDetails = ({ userId }) => {
           <div>
             {
               post.reactions?.map(reaction => {
-                return <img className="reaction" key={`reaction--${reaction.id}`} src={reaction?.image_url} alt={reaction?.label} />
+                return <span>
+                  <img className="reaction" key={`reaction--${reaction.id}`} src={reaction?.image_url} alt={reaction?.label} />
+                  Count: 
+                </span>
               })
             }
           </div>
@@ -75,29 +78,29 @@ export const PostDetails = ({ userId }) => {
         }
         {
           staff === 'true' ? <>
-          { post?.approved === false ? <>
-          <button style={{background:"#2CB71E"}} onClick={(evt) => {
-           evt.preventDefault()
-           const postData = {
-             ...post,
-             category_id: post.category.id,
-             tags: tagsForPost,
-             approved: true
-           }
-           updatePost(postId, postData).then(() => {
-             navigate(`/posts`)
-           })
-        }}>Approve Post</button>
-        <button style={{background:"#D1483F"}} onClick={() => {
-          deletePost(postId).then(() => {
-            navigate(`/posts`)
-          })
-        }}>Deny Post</button>
-          </> : <button style={{background:"#D1483F"}} onClick={() => {
-          deletePost(postId).then(() => {
-            navigate(`/posts`)
-          })
-        }}>Unapprove Post</button> }
+            {post?.approved === false ? <>
+              <button style={{ background: "#2CB71E" }} onClick={(evt) => {
+                evt.preventDefault()
+                const postData = {
+                  ...post,
+                  category_id: post.category.id,
+                  tags: tagsForPost,
+                  approved: true
+                }
+                updatePost(postId, postData).then(() => {
+                  navigate(`/posts`)
+                })
+              }}>Approve Post</button>
+              <button style={{ background: "#D1483F" }} onClick={() => {
+                deletePost(postId).then(() => {
+                  navigate(`/posts`)
+                })
+              }}>Deny Post</button>
+            </> : <button style={{ background: "#D1483F" }} onClick={() => {
+              deletePost(postId).then(() => {
+                navigate(`/posts`)
+              })
+            }}>Unapprove Post</button>}
           </> : ""
         }
       </footer>
