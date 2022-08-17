@@ -23,13 +23,13 @@ export const AuthorDetails = () => {
 
     const subObj = { author: authorId }
     const subscribe = (subObj) => {
-        subscribeToAuthor(subObj).then(
-            getSubscriptionStatus(authorId).then(setSub)
+        subscribeToAuthor(subObj).then(setTimeout(200)).then(
+            getSubscriptionStatus(authorId).then(setSub).then(setTimeout(200))
         )
     }
     const unsubscribe = () => {
-        unsubscribeToAuthor(subId).then(
-            getSubscriptionStatus(authorId).then(setSub)
+        unsubscribeToAuthor(subId).then(setTimeout(200)).then(
+            getSubscriptionStatus(authorId).then(setSub).then(setTimeout(200))
         )
     }
 
