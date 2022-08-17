@@ -1,7 +1,7 @@
 import { getUserById } from "../../managers/UserManager";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getSubscriptionStatus, subscribeToAuthor } from "../../managers/SubscriptionManager";
+import { getSubscriptionStatus, subscribeToAuthor, unsubscribeToAuthor } from "../../managers/SubscriptionManager";
 
 export const AuthorDetails = () => {
     const [rareUser, setRareUser] = useState([])
@@ -18,8 +18,10 @@ export const AuthorDetails = () => {
     }, [authorId])
     const subObj = {author: authorId}
     const subscribe = (subObj) => {
-        
         subscribeToAuthor(subObj)
+    }
+    const unsubscribe = (subId) => {
+        unsubscribeToAuthor(subId)
     }
 
     // const staff = (selectedUser) => {
@@ -67,7 +69,7 @@ export const AuthorDetails = () => {
                         <div value={rareUser.id}>Date Joined: {Date(joinDate)}</div>
                         <div value={rareUser.id}>Is Active? {isActive}</div> */}
                     </div>
-                    <>{sub ? <button >UnSubscribe</button> :
+                    <>{sub ? <button onClick={() => {unsubscribe(sub?.id)}}>UnSubscribe</button> :
                     
                     <button onClick={() => {subscribe(subObj)}}>Subscribe</button>}</>
                     <button className="button" onClick={() => {
