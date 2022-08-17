@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { getAllCategories } from "../../managers/CategoryManager"
-import { createPost } from "../../managers/PostManager"
+import { createPost, getPostById, updatePost } from "../../managers/PostManager"
 import { getAllTags } from "../../managers/TagManager"
 
 export const PostForm = () => {
@@ -11,6 +11,7 @@ export const PostForm = () => {
   const [tagsForPost, setTagsForPost] = useState([])
   let navigate = useNavigate()
   const [staff, setStaff] = useState(false)
+  const [ postImage, setImage] = useState("")
 
   useEffect(() => {
     let isStaff=localStorage.getItem("is_staff")
@@ -57,6 +58,22 @@ export const PostForm = () => {
     newPost[event.target.name] = event.target.value
     setPost(newPost)
   }
+
+  const getBase64 = (file, callback) => {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result));
+    reader.readAsDataURL(file);
+}
+
+const createPostImageString = (event) => {
+    getBase64(event.target.files[0], (base64ImageString) => {
+        console.log("Base64 of file is", base64ImageString);
+        let copy = {...post}
+        copy.image_url = base64ImageString
+        setPost(copy)
+        // Update a component state variable to the value of base64ImageString
+    });
+}
   
 
   return (
@@ -75,18 +92,19 @@ export const PostForm = () => {
                 />
               </div>
             </div>
+
             <div className="field">
               <label htmlFor="image_url" className="label">Image URL: </label>
               <div className="control">
                 <div className="control">
-                  <input type="text" name="image_url" required className="input"
-                    placeholder="Image URL"
-                    value={post.image_url}
-                    onChange={handleChange}
-                  />
+                <input type="file" id="post_image" onChange={createPostImageString} />
+                <input type="hidden" name="post_id" value={post.id} />
+                
                 </div>
               </div>
             </div>
+            
+            
             <div className="field">
               <label htmlFor="content" className="label">Content: </label>
               <div className="control">
