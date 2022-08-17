@@ -6,6 +6,7 @@ export const NavBar = ({ isStaff, token, setToken }) => {
   const navigate = useNavigate()
   const navbar = useRef()
   const hamburger = useRef()
+  let userId = localStorage.getItem('user_id')
 
   const showMobileNavbar = () => {
     hamburger.current.classList.toggle('is-active')
@@ -37,6 +38,7 @@ export const NavBar = ({ isStaff, token, setToken }) => {
                   <Link to="/tags" className="navbar-item">Tag Management</Link>
                   <Link to="/posts/create" className="navbar-item">New Post</Link>    
                   <Link to="/categories" className="navbar-item">Category Management</Link> 
+                  <Link to={`/users/${userId}`}className="navbar-item">My Profile</Link> 
                   {
                     isStaff
                     ?

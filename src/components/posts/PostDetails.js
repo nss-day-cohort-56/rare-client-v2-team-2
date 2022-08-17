@@ -45,6 +45,7 @@ export const PostDetails = ({ userId }) => {
           <div className="media-left">
             <span className="icon is-large">
               <img src={post?.user?.profile_image_url} alt={post.title} onClick={() => { navigate(`/users/${post?.user?.id}`) }} style={{ cursor: "pointer" }} />
+              <img src={`http://localhost:8000${post?.user?.profile_image_url}`} alt={post.title} onClick={() => { navigate(`/authors/${post?.user?.id}`) }} style={{ cursor: "pointer" }} />
             </span>
           </div>
           <div className="media-content">
@@ -62,7 +63,7 @@ export const PostDetails = ({ userId }) => {
               post.reactions?.map(reaction => {
                 return <span>
                   <img className="reaction" key={`reaction--${reaction.id}`} src={reaction?.image_url} alt={reaction?.label} />
-                  Count: 
+                  Count:
                 </span>
               })
             }
