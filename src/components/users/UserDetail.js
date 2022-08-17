@@ -72,7 +72,8 @@ export const UserDetail = () => {
                 <div className="userTitle">Users</div>
                 <section className="userBox" key={rareUser.id}>
                     <div className="user" >
-                        <img src={`http://localhost:8000${profileImage}`} alt="userImage" className="userImage" />
+                        <img src={`http://localhost:8000${profileImage}`} alt="userImage" className="userImage" width="400" height="500"/>
+                        <br></br>
                         <input type="file" id="image" onChange={createProfilePictureString} />
                         <input type="hidden" name="user_id" value={userId} />
                         <button onClick={() => {
