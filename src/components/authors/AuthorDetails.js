@@ -1,13 +1,16 @@
 import { getUserById } from "../../managers/UserManager";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getSubscriptionStatus, subscribeToAuthor, unsubscribeToAuthor } from "../../managers/SubscriptionManager";
+import { getSubscriptionStatus, getUserSubscribers, subscribeToAuthor, unsubscribeToAuthor } from "../../managers/SubscriptionManager";
 
 export const AuthorDetails = () => {
     const [rareUser, setRareUser] = useState([])
     const [subscription, setSub] = useState({})
     const [subId, setSubId] = useState(0)
     const { authorId } = useParams()
+    const [profileImage, setImage] = useState("")
+    const [userSubscriptions, setUserSubscriptions] = useState([])
+    const [subscriberCount, setSubscriberCount] = useState(0)
 
     const navigate = useNavigate()
     useEffect(() => {
@@ -20,6 +23,24 @@ export const AuthorDetails = () => {
         let sub = {...subscription[0]}
         setSubId(sub.id)
     }, [subscription])
+
+    useEffect(
+        () => {
+            let image = rareUser?.profile_image_url
+            setImage(image)
+        },
+        [rareUser]
+    )
+
+    useEffect(() => {
+        getUserSubscribers(authorId).then(setUserSubscriptions)
+    }, [])
+
+    useEffect(() => {
+        if(userSubscriptions.length !== 0) {
+            setSubscriberCount(userSubscriptions.length)
+        }
+    }, [userSubscriptions])
 
     const subObj = { author: authorId }
     const subscribe = (subObj) => {
@@ -46,11 +67,12 @@ export const AuthorDetails = () => {
                 <div className="userTitle">Author</div>
                 <section className="userBox" key={rareUser.id}>
                     <div className="user" >
-                        <img src={profileImg} alt="userImage" className="userImage" />
+                        <img src={`http://localhost:8000${profileImage}`} alt="userImage" className="userImage" />
                         <div value={rareUser.id}>Bio: {bio}</div>
                         <div value={rareUser.id}>Name: {firstName} {lastName}</div>
                         <div value={rareUser.id}>User Name: {userName}</div>
                         <div value={rareUser.id}>Email: {email}</div>
+                        <div>Subscriber Count: {userSubscriptions ? subscriberCount : 0}</div>
                     </div>
                     <>{subscription.length ? <button onClick={() => { unsubscribe() }}>UnSubscribe</button> :
 
