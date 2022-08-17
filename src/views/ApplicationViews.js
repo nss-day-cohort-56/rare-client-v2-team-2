@@ -18,15 +18,18 @@ import { AuthorDetails } from "../components/authors/AuthorDetails"
 
 import { UserEdit } from "../components/users/UserEdit"
 import { CommentEdit } from "../components/comments/CommentEdit"
+import { HomePage } from "../components/home/HomePage"
 
 
 
 export const ApplicationViews = ({ isStaff, token, setToken, setUserId, userId }) => {
   return <Routes>
+    
     <Route path="/login" element={<Login setToken={setToken} setUserId={setUserId} />} />
     <Route path="/register" element={<Register setToken={setToken} setUserId={setUserId} />} />
     <Route element={<Authorized token={token} />}>
       {/* Add Routes here */}
+      <Route path="" element={<HomePage />} />
       <Route path="/tags" element={<TagList />} />
 
       <Route path="/posts" element={<PostList />} />
@@ -40,6 +43,7 @@ export const ApplicationViews = ({ isStaff, token, setToken, setUserId, userId }
       <Route path="/posts/:postId" element={<PostDetails userId={userId} />} />
       <Route path="/posts/:postId/add-comment" element={<CommentForm />} />
       <Route path="/posts/:postId/comments/:commentId/edit" element={<CommentEdit />} />
+      <Route path="/users/:userId" element={<UserDetail />} />
       {
         isStaff === true
           ? <Route path="/users">
