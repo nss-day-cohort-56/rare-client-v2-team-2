@@ -2,6 +2,7 @@ import { getUserById } from "../../managers/UserManager";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+
 export const UserDetail = () => {
     const [rareUser, setRareUser] = useState([])
     const { userId } = useParams()
@@ -29,7 +30,6 @@ export const UserDetail = () => {
             return "No"
         }
     }
-
     // useEffect(() => {console.log(rareUser)}, [])
 
     let userName = rareUser?.user?.username
@@ -68,3 +68,5 @@ export const UserDetail = () => {
 
 
 }
+
+
