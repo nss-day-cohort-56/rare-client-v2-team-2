@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { deletePost, getPostById, updatePost } from "../../managers/PostManager"
 import { FaUserCircle } from 'react-icons/fa'
+import { getAllReactions } from "../../managers/ReactionManager"
 
 export const PostDetails = ({ userId }) => {
   const [post, setPost] = useState({})
@@ -9,6 +10,7 @@ export const PostDetails = ({ userId }) => {
   const { postId } = useParams()
   let navigate = useNavigate()
   const [staff, setStaff] = useState(false)
+  const [reactions, setReactions] = useState([])
 
   useEffect(() => {
     let isStaff = localStorage.getItem("is_staff")
@@ -28,6 +30,10 @@ export const PostDetails = ({ userId }) => {
     setTags(tags)
   }, [post])
 
+  useEffect(() => {
+    getAllReactions().then(setReactions)
+  }, [])
+
   return <section className="section">
     <div className="card">
       <header className="card-header is-justify-content-center">
@@ -44,7 +50,6 @@ export const PostDetails = ({ userId }) => {
         <div className="media">
           <div className="media-left">
             <span className="icon is-large">
-              <img src={post?.user?.profile_image_url} alt={post.title} onClick={() => { navigate(`/users/${post?.user?.id}`) }} style={{ cursor: "pointer" }} />
               <img src={`http://localhost:8000${post?.user?.profile_image_url}`} alt={post.title} onClick={() => { navigate(`/authors/${post?.user?.id}`) }} style={{ cursor: "pointer" }} />
             </span>
           </div>
@@ -59,14 +64,14 @@ export const PostDetails = ({ userId }) => {
           <hr />
           <time >{post.publication_date}</time>
           <div>
-            {
-              post.reactions?.map(reaction => {
+            {/* {
+              reactions.map(reaction => {
                 return <span>
-                  <img className="reaction" key={`reaction--${reaction.id}`} src={reaction?.image_url} alt={reaction?.label} />
+                  <img className="reaction" key={`reaction--${reaction.id}`} src={reaction.image_url} alt={reaction.label} />
                   Count:
                 </span>
               })
-            }
+            } */}
           </div>
         </div>
       </div>
