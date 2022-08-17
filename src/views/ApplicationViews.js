@@ -13,8 +13,12 @@ import { CommentForm } from "../components/comments/CommentForm"
 import { CommentsList } from "../components/comments/CommentList"
 import { Users } from "../components/users/UserList"
 import { UserDetail } from "../components/users/UserDetail"
+
+import { AuthorDetails } from "../components/authors/AuthorDetails"
+
 import { UserEdit } from "../components/users/UserEdit"
 import { CommentEdit } from "../components/comments/CommentEdit"
+
 
 
 export const ApplicationViews = ({ isStaff, token, setToken, setUserId, userId }) => {
@@ -29,6 +33,7 @@ export const ApplicationViews = ({ isStaff, token, setToken, setUserId, userId }
       <Route path="/my-posts" element={<MyPost />} />
       <Route path="/posts/create" element={<PostForm />} />
       <Route path="/posts/:postId/edit" element={<EditPost />} />
+      <Route path="/authors/:authorId" element={<AuthorDetails />} />
 
       <Route path="/categories" element={<CategoriesList />} />
       <Route path="/posts/:postId/comments" element={<CommentsList userId={userId} />} />
@@ -36,14 +41,14 @@ export const ApplicationViews = ({ isStaff, token, setToken, setUserId, userId }
       <Route path="/posts/:postId/add-comment" element={<CommentForm />} />
       <Route path="/posts/:postId/comments/:commentId/edit" element={<CommentEdit />} />
       {
-          isStaff === true
-            ? <Route path="/users">
-              <Route index element={<Users />} />
-              <Route path=":userId" element={<UserDetail />} />
-              <Route path=":userId/edit" element={<UserEdit />} />
-            </Route>
-            : <Route path="/users" element={<Navigate to="/posts" replace />} />
-        }
+        isStaff === true
+          ? <Route path="/users">
+            <Route index element={<Users />} />
+            <Route path=":userId" element={<UserDetail />} />
+            <Route path=":userId/edit" element={<UserEdit />} />
+          </Route>
+          : <Route path="/users" element={<Navigate to="/posts" replace />} />
+      }
     </Route>
   </Routes>
 }

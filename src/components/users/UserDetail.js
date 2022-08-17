@@ -2,6 +2,7 @@ import { getUserById, updateUser } from "../../managers/UserManager";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+
 export const UserDetail = () => {
     const [rareUser, setRareUser] = useState([])
     const { userId } = useParams()
@@ -104,3 +105,5 @@ export const UserDetail = () => {
 
 
 }
+
+
