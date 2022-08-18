@@ -13,9 +13,7 @@ import { CommentForm } from "../components/comments/CommentForm"
 import { CommentsList } from "../components/comments/CommentList"
 import { Users } from "../components/users/UserList"
 import { UserDetail } from "../components/users/UserDetail"
-
 import { AuthorDetails } from "../components/authors/AuthorDetails"
-
 import { UserEdit } from "../components/users/UserEdit"
 import { CommentEdit } from "../components/comments/CommentEdit"
 import { DeactivatedUsers } from "../components/users/DeactivatedList"
@@ -32,16 +30,12 @@ export const ApplicationViews = ({ isStaff, token, setToken, setUserId, userId, 
     <Route element={<Authorized token={token} isActive={isActive} />}>
       {/* Add Routes here */}
       <Route path="" element={<HomePage />} />
-      <Route path="/tags" element={<TagList />} />
       <Route path="/reactions" element={<ReactionList />} />
-
       <Route path="/posts" element={<PostList />} />
       <Route path="/my-posts" element={<MyPost />} />
       <Route path="/posts/create" element={<PostForm />} />
       <Route path="/posts/:postId/edit" element={<EditPost />} />
       <Route path="/authors/:authorId" element={<AuthorDetails />} />
-
-      <Route path="/categories" element={<CategoriesList />} />
       <Route path="/posts/:postId/comments" element={<CommentsList userId={userId} />} />
       <Route path="/posts/:postId" element={<PostDetails userId={userId} />} />
       <Route path="/posts/:postId/add-comment" element={<CommentForm />} />
@@ -56,6 +50,8 @@ export const ApplicationViews = ({ isStaff, token, setToken, setUserId, userId, 
                 <Route path=":userId/edit" element={<UserEdit />} />
               </Route>
               <Route path="/deactivated" element={<DeactivatedUsers />} />
+              <Route path="/categories" element={<CategoriesList />} />
+              <Route path="/tags" element={<TagList />} />
               </>
             : <Route path="/users" element={<Navigate to="/posts" replace />} />
         }

@@ -30,9 +30,35 @@ export const PostDetails = ({ userId }) => {
     setTags(tags)
   }, [post])
 
+
   useEffect(() => {
     getAllReactions().then(setReactions)
   }, [])
+
+  const showDelete = () => {
+    if (parseInt(userId) === post?.user?.id || staff === 'true') {
+      if (staff === 'true' && parseInt(userId) !== post?.user?.id) {
+        return <><button style={{ background: "#D1483F" }} onClick={() => {
+          deletePost(postId).then(() => {
+            navigate('/posts')
+          })
+        }}>Delete</button>
+          <button style={{ background: "#D1483F" }} onClick={() => {
+            deletePost(postId).then(() => {
+              navigate('/posts')
+            })
+          }}>Unapprove Post</button></>
+      }
+      else {
+        return <button style={{ background: "#D1483F" }} onClick={() => {
+          deletePost(postId).then(() => {
+            navigate('/posts')
+          })
+        }}>Delete</button>
+      }
+    }
+  }
+
 
   return <section className="section">
     <div className="card">
@@ -42,9 +68,7 @@ export const PostDetails = ({ userId }) => {
         </h2>
       </header>
       <div className="card-image">
-        <figure className="image">
-          <img src={`http://localhost:8000${post?.image_url}`} alt={post.title} />
-        </figure>
+        <img src={`http://localhost:8000${post?.image_url}`} alt={post.title} width="500" height="500" />
       </div>
       <div className="card-content">
         <div className="media">
@@ -68,7 +92,7 @@ export const PostDetails = ({ userId }) => {
               reactions.map(reaction => {
                 return <span>
                   <button onClick={(() => {
-                    let newReaction = {reaction_id: reaction.id}
+                    let newReaction = { reaction_id: reaction.id }
 
                     addReaction(postId, newReaction)
                   })}>
@@ -89,6 +113,7 @@ export const PostDetails = ({ userId }) => {
         }
         {
           staff === 'true' ? <>
+
             {post?.approved === false ? <>
               <button style={{ background: "#2CB71E" }} onClick={(evt) => {
                 evt.preventDefault()
@@ -112,6 +137,27 @@ export const PostDetails = ({ userId }) => {
                 navigate(`/posts`)
               })
             }}>Unapprove Post</button>}
+
+            {post?.approved === false ? <>
+              <button style={{ background: "#2CB71E" }} onClick={(evt) => {
+                evt.preventDefault()
+                const postData = {
+                  ...post,
+                  category_id: post.category.id,
+                  tags: tagsForPost,
+                  approved: true
+                }
+                updatePost(postId, postData).then(() => {
+                  navigate(`/posts`)
+                })
+              }}>Approve Post</button>
+              <button style={{ background: "#D1483F" }} onClick={() => {
+                deletePost(postId).then(() => {
+                  navigate(`/posts`)
+                })
+              }}>Deny Post</button>
+            </> : showDelete()}
+
           </> : ""
         }
       </footer>
