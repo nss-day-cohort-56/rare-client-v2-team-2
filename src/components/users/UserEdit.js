@@ -74,10 +74,10 @@ export const UserEdit = () => {
                                                     }
                                                 })
 
-                                                if(count === 1) {
+                                                if(count === 1 && editUser?.user?.is_staff === true) {
                                                     window.alert("You must make a new admin account before deactivating.")
                                                 }
-                                                if(count >= 2) {
+                                                if(count >= 2 || editUser?.user?.is_staff === false) {
                                                     const confirmBox = window.confirm("Confirm: Deactivate User")
                                                     if  (confirmBox)
                                                     updateUserActive(userId)
