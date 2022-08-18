@@ -15,9 +15,33 @@ export const getUserById = (id) => {
         .then(res => res.json())
 };
 
-
 export const updateUser = (id, user) => {
     return fetch(`http://localhost:8000/users/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${localStorage.getItem('auth_token')}`
+        },
+        body: JSON.stringify(user)
+    })
+}
+
+// export const updateUser = (id, user) => {
+//     return fetch(`http://localhost:8000/users/${id}`, {
+//         method: "PUT",
+//         headers: {
+//             "Content-Type": "application/json",
+//             'Authorization': `Token ${localStorage.getItem('auth_token')}`
+//         },
+//         body: JSON.stringify(user)
+//     }).then((res) => {
+//         if (res.id == id){
+//             localStorage.setItem("is_staff", res.is_staff)}
+//         })
+// }
+
+export const updateUserActive = (id, user) => {
+    return fetch(`http://localhost:8000/users/${id}/change_active_status`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -31,7 +55,7 @@ export const updateUser = (id, user) => {
 }
 
 
-export const updateUserStatus = (id, user) => {
+export const updateUserStaff = (id, user) => {
     return fetch(`http://localhost:8000/users/${id}/change_staff_status`, {
         method: "PUT",
         headers: {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import { getUserById, updateUser, updateUserStatus } from "../../managers/UserManager"
+import { getUserById, updateUser, updateUserActive, updateUserStaff, updateUserStatus } from "../../managers/UserManager"
 
 export const UserEdit = () => {
     const navigate = useNavigate()
@@ -30,7 +30,7 @@ export const UserEdit = () => {
                                         () => {
                                             const confirmBox = window.confirm("Confirm: Demote User to 'Author'")
                                             if  (confirmBox)
-                                            updateUserStatus(userId)
+                                            updateUserStaff(userId)
                                         .then(() => navigate(`/users/${userId}`))
                                     }}
                                     >Make Author</button>
@@ -40,7 +40,7 @@ export const UserEdit = () => {
                                         () => {
                                             const confirmBox = window.confirm("Confirm: Promote User to 'Admin'")
                                             if  (confirmBox)
-                                            updateUserStatus(userId)
+                                            updateUserStaff(userId)
                                         .then(() => navigate(`/users/${userId}`))
                                     }}
                                     >Make Admin</button>
@@ -56,7 +56,7 @@ export const UserEdit = () => {
                                             () => {
                                                 const confirmBox = window.confirm("Confirm: Deactivate User")
                                                 if  (confirmBox)
-                                                updateUser(userId)
+                                                updateUserActive(userId)
                                             .then(() => navigate(`/users/${userId}`))
                                         }}
                                     >Deactivate</button>
@@ -66,7 +66,7 @@ export const UserEdit = () => {
                                         () => {
                                             const confirmBox = window.confirm("Confirm: Reactivate User")
                                             if  (confirmBox)
-                                            updateUser(userId)
+                                            updateUserActive(userId)
                                         .then(() => navigate(`/users/${userId}`))
                                     }}
                                     >Reactivate</button>

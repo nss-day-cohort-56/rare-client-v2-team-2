@@ -1,4 +1,4 @@
-import { getAllUsers, updateUser } from "../../managers/UserManager";
+import { getAllUsers, updateUser, updateUserActive } from "../../managers/UserManager";
 import { useState } from "react"
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -63,7 +63,7 @@ export const DeactivatedUsers = () => {
                                         () => {
                                             const confirmBox = window.confirm("Confirm: Reactivate User")
                                             if  (confirmBox)
-                                            updateUser(rareUser.id)
+                                            updateUserActive(rareUser.id)
                                         .then(() => navigate(`/users/`))
                                     }}
                                     >Reactivate</button>
