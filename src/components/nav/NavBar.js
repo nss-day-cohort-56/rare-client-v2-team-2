@@ -37,12 +37,14 @@ export const NavBar = ({ isStaff, token, setToken }) => {
                   <Link to="/my-posts" className="navbar-item">My Posts</Link>
                   <Link to="/tags" className="navbar-item">Tag Management</Link>
                   <Link to="/posts/create" className="navbar-item">New Post</Link>    
-                  <Link to="/categories" className="navbar-item">Category Management</Link> 
+                  <Link to="/categories" className="navbar-item">Category Management</Link>
                   <Link to={`/users/${userId}`}className="navbar-item">My Profile</Link> 
                   {
                     isStaff
-                    ?
+                    ?<>
+                    <Link to="/reactions" className="navbar-item">Reaction Management</Link>  
                     <Link to="/users" className="navbar-item">Users</Link>
+                    </>
                     : ""
                   }     
               </>
