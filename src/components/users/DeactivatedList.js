@@ -1,13 +1,20 @@
-import { getAllUsers } from "../../managers/UserManager";
+import { getAllUsers, updateUser, updateUserActive } from "../../managers/UserManager";
 import { useState } from "react"
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-export const Users = () => {
+export const DeactivatedUsers = () => {
+
+
     const [rareUsers, setRareUsers] = useState([])
     const navigate = useNavigate()
     useEffect(()=> {
-        getAllUsers().then(usersData => setRareUsers(usersData))
+        fetch("http://localhost:8000/users", {
+            headers: {
+                'Authorization': `Token ${localStorage.getItem('auth_token')}`
+            }
+        }).then(res => res.json())
+        .then((data) =>{ setRareUsers(data )})
     }, [])
 
     //determine if user is staff
@@ -33,37 +40,46 @@ export const Users = () => {
         <>
             
             <div className="user_container">
-                <div className="userTitle">Users</div>
+                <div className="userTitle">Deactivated Users:</div>
                 {rareUsers.map((rareUser) => {
                     let userName = rareUser.user.username
                     let firstName = rareUser.user.first_name
                     let lastName = rareUser.user.last_name
                     let profileType = staff(rareUser.user)
                     let activationStatus = active(rareUser?.user)
-
+                    
                     return <section className="userBox" key={rareUser.id}>
                         <div className="user" >
-
+                        {
+                        rareUser?.user?.is_active !== true
+                        ?
+                        <>
                         <div value={rareUser.id}>Name: {firstName} {lastName}</div>
                         <div value={rareUser.id}>Display Name: {userName}</div>
                         <div value={rareUser.id}>Profile Type: {profileType}</div>
                         <div value={rareUser.id}>Activation Status: {activationStatus}</div>
-
+                        <button
+                                    onClick={
+                                        () => {
+                                            const confirmBox = window.confirm("Confirm: Reactivate User")
+                                            if  (confirmBox)
+                                            updateUserActive(rareUser.id)
+                                        .then(() => navigate(`/users/`))
+                                    }}
+                                    >Reactivate</button>
+                        </>
+                        :
+                        ""
+                        }
                         </div>
-                        <Link to={`/users/${rareUser.id}`}>
-                            <div value={rareUser.id}>See Details</div>
-                        </Link>
-                        <Link to={`/users/${rareUser.id}/edit`}>
-                            <div value={rareUser.id}>Edit User</div>
-                        </Link>
-                        
                     </section>
                 })}
+                
                 <button type="submit"
                     onClick={() => {
-                        navigate(`/deactivated`)
+                        navigate(`/users`)
                     }} 
-                    className="button is-success">Deactivated Users
+                    className="button is-success">Back
                 </button>
             </div>
         </>
