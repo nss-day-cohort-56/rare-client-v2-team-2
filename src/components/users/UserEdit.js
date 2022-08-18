@@ -19,7 +19,7 @@ export const UserEdit = () => {
         getDemotionsByUser(userId).then(data => setDemotionStatus(data))
     }, [userId])
 
-    const adminApproval = () => {
+    const adminApprovalDemote = () => {
         if (demotionStatus.action === 'demote') {
             if (demotionStatus.approver_one === parseInt(loggedInUser) || (demotionStatus.admin === parseInt(loggedInUser))) {
                 return <div>User demotion pending approval.</div>
@@ -58,6 +58,55 @@ export const UserEdit = () => {
         }
     }
 
+    const adminApprovalDeactivate = () => {
+        if (demotionStatus.action === 'deactivate') {
+            if (demotionStatus.approver_one === parseInt(loggedInUser) || (demotionStatus.admin === parseInt(loggedInUser))) {
+                return <div>User deactivation pending approval.</div>
+            }
+            else if (demotionStatus.admin !== parseInt(loggedInUser)) {
+                return <button onClick={() => {
+                    deleteDemotion(demotionStatus.id)
+                    updateUserActive(userId)
+                    .then(() => navigate(`/users/${userId}`))
+                }}>Approve Deactivation</button>
+            }
+        }
+
+        else if (demotionStatus.message) {
+            return <button onClick={() => {
+                let count = 0
+                users.map(user => {
+                    if (user?.user?.is_staff === true) {
+                        count++
+                    }
+                })
+
+                if(count <= 2) {
+                    if(editUser?.user?.is_staff) {
+                        window.alert("You must make a new admin account before deactivating.") 
+                    }
+                    else {
+                        let newDemotion = {
+                            action: "deactivate",
+                            admin: userId,
+                            approver_one: loggedInUser
+                        }
+                        createDemotion(newDemotion)
+                    }
+                }
+
+                if(count > 2) {
+                    let newDemotion = {
+                        action: "deactivate",
+                        admin: userId,
+                        approver_one: loggedInUser
+                    }
+                    createDemotion(newDemotion)
+                }
+            }}>Deactivate</button>
+        }
+    }
+
     return (
         <>
             <section key={`user--${editUser.id}`}className="section">
@@ -70,7 +119,7 @@ export const UserEdit = () => {
                                     {
                                     editUser?.user?.is_staff 
                                     ?
-                                    adminApproval()
+                                    adminApprovalDemote()
                                     :
                                     <button
                                     onClick={
@@ -88,26 +137,7 @@ export const UserEdit = () => {
                                     {
                                     editUser?.user?.is_active 
                                     ?
-                                    <button
-                                        onClick={
-                                            () => {
-                                                let count = 0
-                                                users.map(user => {
-                                                    if(user?.user?.is_staff === true) {
-                                                        count++
-                                                    }
-                                                })
-                                                if(count === 1 && editUser?.user?.is_staff === true) {
-                                                    window.alert("You must make a new admin account before deactivating.")
-                                                }
-                                                if(count >= 2 || editUser?.user?.is_staff === false) {
-                                                    const confirmBox = window.confirm("Confirm: Deactivate User")
-                                                    if  (confirmBox)
-                                                    updateUserActive(userId)
-                                                    .then(() => navigate(`/users/${userId}`))
-                                                }
-                                        }}
-                                    >Deactivate</button>
+                                    adminApprovalDeactivate()
                                     :
                                     <button
                                     onClick={
