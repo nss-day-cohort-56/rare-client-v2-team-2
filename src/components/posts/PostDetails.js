@@ -28,6 +28,30 @@ export const PostDetails = ({ userId }) => {
     setTags(tags)
   }, [post])
 
+  const showDelete = () => {
+    if (parseInt(userId) === post?.user?.id || staff === 'true') {
+      if (staff === 'true' && parseInt(userId) !== post?.user?.id) {
+        return <><button style={{background:"#D1483F"}} onClick={() => {
+          deletePost(postId).then(() => {
+            navigate('/posts')
+          })
+        }}>Delete</button>
+        <button style={{background:"#D1483F"}} onClick={() => {
+          deletePost(postId).then(() => {
+            navigate('/posts')
+          })
+        }}>Unapprove Post</button></>
+      }
+      else {
+        return <button style={{background:"#D1483F"}} onClick={() => {
+          deletePost(postId).then(() => {
+            navigate('/posts')
+          })
+        }}>Delete</button>
+      }
+    }
+  }
+
   return <section className="section">
     <div className="card">
       <header className="card-header is-justify-content-center">
@@ -36,9 +60,7 @@ export const PostDetails = ({ userId }) => {
         </h2>
       </header>
       <div className="card-image">
-        <figure className="image">
-          <img src={`http://localhost:8000${post?.image_url}`} alt={post.title} />
-        </figure>
+          <img src={`http://localhost:8000${post?.image_url}`} alt={post.title} width="500" height="500"/>
       </div>
       <div className="card-content">
         <div className="media">
@@ -85,11 +107,7 @@ export const PostDetails = ({ userId }) => {
             navigate(`/posts`)
           })
         }}>Deny Post</button>
-          </> : <button style={{background:"#D1483F"}} onClick={() => {
-          deletePost(postId).then(() => {
-            navigate(`/posts`)
-          })
-        }}>Unapprove Post</button> }
+          </> : showDelete()}
           </> : ""
         }
       </footer>
