@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import { getUserById, updateUser, updateUserActive, updateUserStaff, updateUserStatus } from "../../managers/UserManager"
+import { getAllUsers, getUserById, updateUser, updateUserActive, updateUserStaff, updateUserStatus } from "../../managers/UserManager"
 
 export const UserEdit = () => {
     const navigate = useNavigate()
     const [editUser, setEditUser] = useState([])
     const { userId } = useParams()
+    const [users, setUsers] = useState([])    
 
     useEffect(() => {
         getUserById(userId).then(data => setEditUser(data))
+        getAllUsers().then(data => setUsers(data))
     }, [userId])
-    
-
 
     return (
         <>
@@ -28,10 +28,23 @@ export const UserEdit = () => {
                                     <button
                                     onClick={
                                         () => {
-                                            const confirmBox = window.confirm("Confirm: Demote User to 'Author'")
-                                            if  (confirmBox)
-                                            updateUserStaff(userId)
-                                        .then(() => navigate(`/users/${userId}`))
+                                                let count = 0
+
+                                                users.map(user => {
+                                                    if(user?.user?.is_staff === true) {
+                                                        count++
+                                                    }
+                                                })
+
+                                                if(count === 1) {
+                                                    window.alert("You must make a new admin account before demoting.")
+                                                }
+                                                if(count >= 2) {
+                                                    const confirmBox = window.confirm("Confirm: Demote User to 'Author'")
+                                                    if  (confirmBox)
+                                                    updateUserStaff(userId)
+                                                    .then(() => navigate(`/users/${userId}`))
+                                                }
                                     }}
                                     >Make Author</button>
                                     :
@@ -54,10 +67,22 @@ export const UserEdit = () => {
                                     <button
                                         onClick={
                                             () => {
-                                                const confirmBox = window.confirm("Confirm: Deactivate User")
-                                                if  (confirmBox)
-                                                updateUserActive(userId)
-                                            .then(() => navigate(`/users/${userId}`))
+                                                let count = 0
+                                                users.map(user => {
+                                                    if(user?.user?.is_staff === true) {
+                                                        count++
+                                                    }
+                                                })
+
+                                                if(count === 1) {
+                                                    window.alert("You must make a new admin account before deactivating.")
+                                                }
+                                                if(count >= 2) {
+                                                    const confirmBox = window.confirm("Confirm: Deactivate User")
+                                                    if  (confirmBox)
+                                                    updateUserActive(userId)
+                                                    .then(() => navigate(`/users/${userId}`))
+                                                }
                                         }}
                                     >Deactivate</button>
                                     :
