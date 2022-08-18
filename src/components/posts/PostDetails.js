@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { deletePost, getPostById, updatePost } from "../../managers/PostManager"
 import { FaUserCircle } from 'react-icons/fa'
-import { getAllReactions } from "../../managers/ReactionManager"
+import { getAllReactions, addReaction } from "../../managers/ReactionManager"
 
 export const PostDetails = ({ userId }) => {
   const [post, setPost] = useState({})
@@ -67,7 +67,12 @@ export const PostDetails = ({ userId }) => {
             {
               reactions.map(reaction => {
                 return <span>
-                  <img className="reaction" key={`reaction--${reaction.id}`} src={reaction.image_url} alt={reaction.label}onClick={() => {}} />
+                  <button onClick={(() => {
+                    let newReaction = {reaction_id: reaction.id}
+
+                    addReaction(postId, newReaction)
+                  })}>
+                    <img className="reaction" key={`reaction--${reaction.id}`} src={reaction.image_url} alt={reaction.label} /></button>
                   Count:
                 </span>
               })
