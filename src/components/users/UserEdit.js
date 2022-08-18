@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import { getUserById, updateUser } from "../../managers/UserManager"
+import { getAllUsers, getUserById, updateUser, updateUserActive, updateUserStaff, updateUserStatus } from "../../managers/UserManager"
 
 export const UserEdit = () => {
     const navigate = useNavigate()
     const [editUser, setEditUser] = useState([])
     const { userId } = useParams()
+    const [users, setUsers] = useState([])    
 
     useEffect(() => {
         getUserById(userId).then(data => setEditUser(data))
+        getAllUsers().then(data => setUsers(data))
     }, [userId])
-
 
     return (
         <>
@@ -25,18 +26,75 @@ export const UserEdit = () => {
                                     editUser?.user?.is_staff 
                                     ?
                                     <button
-                                        onClick={
-                                            () => updateUser(userId)
-                                            .then(() => navigate(`/users/${userId}`))
-                                        }
+                                    onClick={
+                                        () => {
+                                                let count = 0
+
+                                                users.map(user => {
+                                                    if(user?.user?.is_staff === true) {
+                                                        count++
+                                                    }
+                                                })
+
+                                                if(count === 1) {
+                                                    window.alert("You must make a new admin account before demoting.")
+                                                }
+                                                if(count >= 2) {
+                                                    const confirmBox = window.confirm("Confirm: Demote User to 'Author'")
+                                                    if  (confirmBox)
+                                                    updateUserStaff(userId)
+                                                    .then(() => navigate(`/users/${userId}`))
+                                                }
+                                    }}
                                     >Make Author</button>
                                     :
                                     <button
-                                        onClick={
-                                            () => updateUser(userId)
-                                            .then(() => navigate(`/users/${userId}`))
-                                        }
+                                    onClick={
+                                        () => {
+                                            const confirmBox = window.confirm("Confirm: Promote User to 'Admin'")
+                                            if  (confirmBox)
+                                            updateUserStaff(userId)
+                                        .then(() => navigate(`/users/${userId}`))
+                                    }}
                                     >Make Admin</button>
+                                    }           
+                                </div>
+                                <div className="field">
+                                    <label htmlFor="active" className="label">Activation Status: </label>
+                                    {
+                                    editUser?.user?.is_active 
+                                    ?
+                                    <button
+                                        onClick={
+                                            () => {
+                                                let count = 0
+                                                users.map(user => {
+                                                    if(user?.user?.is_staff === true) {
+                                                        count++
+                                                    }
+                                                })
+
+                                                if(count === 1 && editUser?.user?.is_staff === true) {
+                                                    window.alert("You must make a new admin account before deactivating.")
+                                                }
+                                                if(count >= 2 || editUser?.user?.is_staff === false) {
+                                                    const confirmBox = window.confirm("Confirm: Deactivate User")
+                                                    if  (confirmBox)
+                                                    updateUserActive(userId)
+                                                    .then(() => navigate(`/users/${userId}`))
+                                                }
+                                        }}
+                                    >Deactivate</button>
+                                    :
+                                    <button
+                                    onClick={
+                                        () => {
+                                            const confirmBox = window.confirm("Confirm: Reactivate User")
+                                            if  (confirmBox)
+                                            updateUserActive(userId)
+                                        .then(() => navigate(`/users/${userId}`))
+                                    }}
+                                    >Reactivate</button>
                                     }           
                                 </div>
                             </form>

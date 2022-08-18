@@ -18,17 +18,18 @@ import { AuthorDetails } from "../components/authors/AuthorDetails"
 
 import { UserEdit } from "../components/users/UserEdit"
 import { CommentEdit } from "../components/comments/CommentEdit"
+import { DeactivatedUsers } from "../components/users/DeactivatedList"
 import { HomePage } from "../components/home/HomePage"
 import { ReactionList } from "../components/reactions/ReactionList"
 
 
 
-export const ApplicationViews = ({ isStaff, token, setToken, setUserId, userId }) => {
+export const ApplicationViews = ({ isStaff, token, setToken, setUserId, userId, isActive }) => {
   return <Routes>
     
     <Route path="/login" element={<Login setToken={setToken} setUserId={setUserId} />} />
     <Route path="/register" element={<Register setToken={setToken} setUserId={setUserId} />} />
-    <Route element={<Authorized token={token} />}>
+    <Route element={<Authorized token={token} isActive={isActive} />}>
       {/* Add Routes here */}
       <Route path="" element={<HomePage />} />
       <Route path="/tags" element={<TagList />} />
@@ -47,14 +48,17 @@ export const ApplicationViews = ({ isStaff, token, setToken, setUserId, userId }
       <Route path="/posts/:postId/comments/:commentId/edit" element={<CommentEdit />} />
       <Route path="/users/:userId" element={<UserDetail />} />
       {
-        isStaff === true
-          ? <Route path="/users">
-            <Route index element={<Users />} />
-            <Route path=":userId" element={<UserDetail />} />
-            <Route path=":userId/edit" element={<UserEdit />} />
-          </Route>
-          : <Route path="/users" element={<Navigate to="/posts" replace />} />
-      }
+          isStaff === true
+            ? <>
+              <Route path="/users">
+                <Route index element={<Users />} />
+                <Route path=":userId" element={<UserDetail />} />
+                <Route path=":userId/edit" element={<UserEdit />} />
+              </Route>
+              <Route path="/deactivated" element={<DeactivatedUsers />} />
+              </>
+            : <Route path="/users" element={<Navigate to="/posts" replace />} />
+        }
     </Route>
   </Routes>
 }
