@@ -109,9 +109,9 @@ export const UserDetail = () => {
                         <div value={rareUser.id}>Is Active? {isActive}</div>
                         <div>Subscriber Count: {userSubscriptions ? subscriberCount : 0}</div>
                     </div>
-                    <button className="button" onClick={() => {
+                    { rareUser?.user?.is_staff ? <button className="button" onClick={() => {
                         navigate(`/users`)
-                    }}>Back To Users</button>
+                    }}>Back To Users</button> : ""}
                 </section>
             </div>
         </>
