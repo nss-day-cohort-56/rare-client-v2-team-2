@@ -8,6 +8,8 @@ export const Login = ({ setToken, setUserId }) => {
   const navigate = useNavigate()
   const [isUnsuccessful, setIsUnsuccessful] = useState(false)
 
+  
+
   const handleLogin = (e) => {
     e.preventDefault()
 
@@ -19,6 +21,7 @@ export const Login = ({ setToken, setUserId }) => {
     loginUser(user).then(res => {
       if ("valid" in res && res.valid) {
         localStorage.setItem('is_staff', res.is_staff)
+        localStorage.setItem('is_active', res.is_active)
         setToken(res.token)
         setUserId(res.user_id)
         navigate("/posts")
