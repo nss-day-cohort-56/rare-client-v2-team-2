@@ -1,4 +1,5 @@
-export const createDemotion = (demoteObj) => {
+
+export const createDemotion = (demoteObj, userId) => {
     return fetch(`http://localhost:8000/demote`, {
         method: 'POST',
         headers: {
@@ -18,6 +19,7 @@ export const getDemotionsByUser = (userId) => {
         .then(res => res.json())
 };
 
+
 export const deleteDemotion = (demotionId) => {
     return fetch(`http://localhost:8000/demote/${demotionId}`, {
         method: "DELETE",
@@ -26,3 +28,4 @@ export const deleteDemotion = (demotionId) => {
         }
     })
 }
+

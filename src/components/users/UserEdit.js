@@ -97,7 +97,6 @@ export const UserEdit = () => {
                                                         count++
                                                     }
                                                 })
-
                                                 if(count === 1 && editUser?.user?.is_staff === true) {
                                                     window.alert("You must make a new admin account before deactivating.")
                                                 }

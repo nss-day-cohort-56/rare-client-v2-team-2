@@ -24,17 +24,18 @@ export const Register = ({ setToken, setUserId }) => {
         last_name: lastName.current.value,
         email: email.current.value,
         password: password.current.value,
-        bio: bio.current.value
+        bio: bio.current.value,
+        profile_image_url: ""
       }
 
       registerUser(newUser)
         .then(res => {
-          if ("valid" in res && res.valid) {
+          if ("token" in res) {
             localStorage.setItem('is_staff', res.is_staff)
             localStorage.setItem('is_active', res.is_active)
             setToken(res.token)
             setUserId(res.user_id)
-            navigate("/")
+            navigate("/posts")
           }
         })
     } else {
