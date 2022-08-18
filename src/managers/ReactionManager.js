@@ -16,3 +16,14 @@ export const addReaction = (postId, reactionId) => {
     body: JSON.stringify(reactionId)
   })
 }
+
+export const createReaction = (reaction) => {
+  return fetch('http://localhost:8000/reactions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Token ${localStorage.getItem('auth_token')}`
+    },
+    body: JSON.stringify(reaction)
+  }).then(res => res.json())
+}

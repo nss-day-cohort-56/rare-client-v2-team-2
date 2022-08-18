@@ -20,6 +20,7 @@ import { UserEdit } from "../components/users/UserEdit"
 import { CommentEdit } from "../components/comments/CommentEdit"
 import { DeactivatedUsers } from "../components/users/DeactivatedList"
 import { HomePage } from "../components/home/HomePage"
+import { ReactionList } from "../components/reactions/ReactionList"
 
 
 
@@ -32,6 +33,7 @@ export const ApplicationViews = ({ isStaff, token, setToken, setUserId, userId, 
       {/* Add Routes here */}
       <Route path="" element={<HomePage />} />
       <Route path="/tags" element={<TagList />} />
+      <Route path="/reactions" element={<ReactionList />} />
 
       <Route path="/posts" element={<PostList />} />
       <Route path="/my-posts" element={<MyPost />} />
