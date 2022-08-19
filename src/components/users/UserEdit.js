@@ -72,7 +72,7 @@ export const UserEdit = () => {
             }
         }
 
-        else if (demotionStatus.message) {
+        else if (demotionStatus.message || demotionStatus.action === "demote") {
             return <button onClick={() => {
                 let count = 0
                 users.map(user => {
