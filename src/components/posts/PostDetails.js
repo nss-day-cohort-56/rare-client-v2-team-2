@@ -82,7 +82,7 @@ export const PostDetails = ({ userId }) => {
     <div className="card">
       <header className="card-header is-justify-content-center">
         <h2 className="title is-size-3 p-3 ">
-          {post.title}
+          {post?.post?.title}
         </h2>
       </header>
       <div className="card-image">
@@ -102,9 +102,9 @@ export const PostDetails = ({ userId }) => {
         </div>
 
         <div className="content">
-          {post.content}
+          {post?.post?.content}
           <hr />
-          <time >{post.publication_date}</time>
+          <time >{post?.post?.publication_date}</time>
           <div>
             {
               reactions.map(reaction => {

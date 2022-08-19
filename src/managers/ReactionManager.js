@@ -27,3 +27,24 @@ export const createReaction = (reaction) => {
     body: JSON.stringify(reaction)
   }).then(res => res.json())
 }
+
+export const deleteReaction = (reactionId) => {
+  return fetch(`http://localhost:8000/reactions/${reactionId}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Token ${localStorage.getItem('auth_token')}`
+    }
+  })
+}
+
+export const updateReaction = (reaction) => {
+  return fetch(`http://localhost:8000/reactions/${reaction.id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Token ${localStorage.getItem('auth_token')}`
+    },
+    body: JSON.stringify(reaction)
+  })
+}
+

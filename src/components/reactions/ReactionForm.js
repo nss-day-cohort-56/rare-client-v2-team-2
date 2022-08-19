@@ -1,23 +1,29 @@
-import { useState } from "react"
-import { createReaction } from "../../managers/ReactionManager"
 
-export const ReactionForm = ({loadReactions}) => {
+import { createReaction, updateReaction } from "../../managers/ReactionManager"
 
-    const [reaction, setReaction] = useState({
-        reaction_id: "",
-        label: "",
-        image_url: ""
-    })
+export const ReactionForm = ({loadReactions, reaction, setReaction}) => {
 
     const saveReactionEvent = (event) => {
         event.preventDefault()
-        createReaction(reaction).then((data) => {
-            loadReactions(data)
-        })
+        if (reaction.id) {
+            updateReaction(reaction).then(loadReactions)
+            setReaction({
+                label: '',
+                image_url: ''
+            })
+        } else {
+            createReaction(reaction).then((data) => {
+                loadReactions(data)
+                setReaction({
+                    label: '',
+                    image_url: ''
+                })
+            })
+        }
     }
 
 
-
+    
 
     return (
         <form>

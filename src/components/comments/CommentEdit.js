@@ -24,7 +24,7 @@ export const CommentEdit = () => {
         <>
             <h1>Edit Comment</h1>
             <form className="commentForm">
-                <h2 className="commentForm__title">Edit {comment.post}</h2>
+                <h2 className="commentForm__title">{comment.post}</h2>
                 <fieldset>
                     <div className="form-group">
                         <label htmlFor="content">Comment:</label>

@@ -44,7 +44,7 @@ export const PostForm = () => {
     }
 
     createPost(postData).then((post) => {
-      if(staff === 'true') {
+      if(staff === true) {
         navigate(`posts/${post.id}`)
       }
       else {

@@ -107,7 +107,7 @@ useEffect(
                         }}>
         <option value="0">Filter by User...</option>
         {userList.map(user => {
-            return <option value={`${user.id}`}>{user?.user?.first_name}</option>
+            return <option value={`${user.id}`}>{user?.user?.username}</option>
         })}
             </select>
         <select className="tagFilter" onChange={(event) => {

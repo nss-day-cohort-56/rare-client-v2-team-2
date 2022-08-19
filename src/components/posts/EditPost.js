@@ -15,7 +15,7 @@ export const EditPost = () => {
   useEffect(() => {
     getSinglePost(postId).then(data => {
       setPost(data)
-      const tagIds = data.tags.map(t => t.id)
+      const tagIds = data?.post?.tags.map(t => t.id)
       setTagsForPost(tagIds)
     })
     getAllCategories().then(categoriesData => setCategories(categoriesData))
@@ -36,8 +36,15 @@ export const EditPost = () => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault()
-    const postData = {
-      ...post,
+    
+    let postData = {
+      title: post?.post?.title,
+      publication_date: post?.post?.publication_date,
+      image_url: post?.post?.image_url,
+      category_id: post?.post?.category?.id,
+      content: post?.post?.content,
+      approved: post?.post?.approved,
+
       tags: tagsForPost
     }
 
@@ -48,7 +55,7 @@ export const EditPost = () => {
 
   const handleChange = (event) => {
     const postCopy = { ...post }
-    postCopy[event.target.name] = event.target.value
+    postCopy[event?.target?.name] = event.target.value
     setPost(postCopy)
   }
 
@@ -64,7 +71,7 @@ export const EditPost = () => {
               <div className="control">
                 <input type="text" name="title" required autoFocus className="input"
                   placeholder="Title"
-                  value={post.title}
+                  defaultValue={post?.post?.title}
                   onChange={handleChange}
                 />
               </div>
@@ -73,11 +80,9 @@ export const EditPost = () => {
               <label htmlFor="image_url" className="label">Image URL: </label>
               <div className="control">
                 <div className="control">
-                  <input type="text" name="image_url" required autoFocus className="input"
-                    placeholder="Image URL"
-                    value={post.image_url}
-                    onChange={handleChange}
-                  />
+                <input type="file" id="post_image" onChange={handleChange} />
+                <input type="hidden" name="post_id" value={post.id} />
+                
                 </div>
               </div>
             </div>
@@ -88,7 +93,7 @@ export const EditPost = () => {
                   <textarea
                     className="textarea"
                     name="content"
-                    value={post.content}
+                    defaultValue={post?.post?.content}
                     onChange={handleChange}
                   ></textarea>
                 </div>
@@ -99,17 +104,18 @@ export const EditPost = () => {
               <div className="control">
                 <div className="select">
                   <select name="category_id"
-                    value={parseInt(post.category_id)}
-                    onChange={handleChange}>
-                    <option value="0">Select a category</option>
-                    {
-                      categories.map(c => (
-                        <option key={c.id} value={c.id}>
-                          {c.label}
-                        </option>
-                      ))
-                    }
-                  </select>
+                  defaultValue={(post.category_id)}
+                  onChange={handleChange}>
+                  <option value="0">Select a category</option>
+                  {
+                    categories.map(c => (
+                      <option key={c.id} value={c.id}>
+                        {c.label}
+                      </option>
+                    ))
+                  }
+                </select>
+
                 </div>
               </div>
             </div>

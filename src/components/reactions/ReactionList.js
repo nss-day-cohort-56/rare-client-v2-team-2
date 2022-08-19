@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getAllReactions } from "../../managers/ReactionManager"
+import { deleteReaction, getAllReactions } from "../../managers/ReactionManager"
 import { ReactionForm } from "./ReactionForm"
 
 export const ReactionList = () => {
@@ -14,6 +14,17 @@ export const ReactionList = () => {
     },[])
 
     const isStaff = localStorage.getItem("is_staff") === "true"
+
+    const [editReaction, setEditReaction] = useState({
+        label: '',
+        image_url: ''
+    })
+
+    const handleDelete = (reactionId) => {
+        deleteReaction(reactionId).then(loadReactions)
+    }
+
+
 
 
     return <section className="section">
@@ -36,12 +47,13 @@ export const ReactionList = () => {
                     <td>{reaction.label}</td>
                     <td>
                         <div className="buttons">
-                        {/* <button className="button is-warning" onClick={() => {}}>edit</button>
-                        <button className="button is-danger" onClick={() => {
-                            const confirmBox = window.confirm("Do you really want to delete this tag?")
-                            if (confirmBox)
-                            handleDelete(tag.id)
-                          }}>delete</button> */}
+                        <button className="button is-warning" onClick={() => { setEditReaction(reaction) }}>edit</button>
+                                                    <button className="button is-danger" onClick={() => {
+                                                        const confirmBox = window.confirm("Do you really want to delete this reaction?")
+                                                        if (confirmBox)
+                                                            handleDelete(reaction.id)
+                                                    }}>delete</button>
+
                         </div>
                     </td>
                     </tr>
@@ -53,8 +65,9 @@ export const ReactionList = () => {
         : ""
     }
     <div className="column">
-        <ReactionForm loadReactions={loadReactions}/>
-      </div>
+        <ReactionForm loadReactions={loadReactions} reaction={editReaction} setReaction={setEditReaction} />
+
+    </div>
     </div>
 </section>
 }

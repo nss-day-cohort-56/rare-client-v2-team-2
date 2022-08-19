@@ -5,6 +5,7 @@ export const CategoryForm = ({ loadCategories, category, setCategory }) => {
     event.preventDefault()
     if (category.id) {
       updateCategory(category).then(loadCategories)
+      setCategory({ label: '' })
     } else {
       createCategory(category).then((data) => {
         loadCategories(data)
