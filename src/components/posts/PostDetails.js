@@ -36,10 +36,17 @@ export const PostDetails = ({ userId }) => {
             navigate('/posts')
           })
         }}>Delete</button>
-        <button style={{background:"#D1483F"}} onClick={() => {
-          deletePost(postId).then(() => {
-            navigate('/posts')
-          })
+        <button style={{background:"#D1483F"}} onClick={(evt) => {
+          evt.preventDefault()
+           const postData = {
+             ...post,
+             category_id: post.category.id,
+             tags: tagsForPost,
+             approved: false
+           }
+           updatePost(postId, postData).then(() => {
+             navigate(`/posts`)
+           })
         }}>Unapprove Post</button></>
       }
       else {
