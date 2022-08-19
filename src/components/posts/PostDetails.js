@@ -23,7 +23,7 @@ export const PostDetails = ({ userId }) => {
 
   useEffect(() => {
     let tags = []
-    post?.tags?.map(tag => {
+    post?.post?.tags?.map(tag => {
       tags.push(parseInt(tag.id))
     })
 
@@ -36,8 +36,8 @@ export const PostDetails = ({ userId }) => {
   }, [])
 
   const showDelete = () => {
-    if (parseInt(userId) === post?.user?.id || staff === 'true') {
-      if (staff === 'true' && parseInt(userId) !== post?.user?.id) {
+    if (parseInt(userId) === post?.post?.user?.id || staff === 'true') {
+      if (staff === 'true' && parseInt(userId) !== post?.post?.user?.id) {
         return <><button style={{ background: "#D1483F" }} onClick={() => {
           deletePost(postId).then(() => {
             navigate('/posts')
@@ -59,6 +59,15 @@ export const PostDetails = ({ userId }) => {
     }
   }
 
+  const getReactionCount = (reaction) => {
+    let currentReaction = post?.reactions?.find(reactionCount => reactionCount.id == reaction.id)
+    if (currentReaction != undefined) {
+      return currentReaction.reaction_count
+    }
+    else {
+      return 0
+    }
+  }
 
   return <section className="section">
     <div className="card">
@@ -68,18 +77,18 @@ export const PostDetails = ({ userId }) => {
         </h2>
       </header>
       <div className="card-image">
-        <img src={`http://localhost:8000${post?.image_url}`} alt={post.title} width="500" height="500" />
+        <img src={`http://localhost:8000${post?.post?.image_url}`} alt={post.title} width="500" height="500" />
       </div>
       <div className="card-content">
         <div className="media">
           <div className="media-left">
             <span className="icon is-large">
-              <img src={`http://localhost:8000${post?.user?.profile_image_url}`} alt={post.title} onClick={() => { navigate(`/authors/${post?.user?.id}`) }} style={{ cursor: "pointer" }} />
+              <img src={`http://localhost:8000${post?.post?.user?.profile_image_url}`} alt={post.title} onClick={() => { navigate(`/authors/${post?.post?.user?.id}`) }} style={{ cursor: "pointer" }} />
             </span>
           </div>
           <div className="media-content">
-            <p className="title is-4">{post?.user?.user?.first_name} {post?.user?.user?.last_name}</p>
-            <p className="subtitle is-6">@{post?.user?.user?.username}</p>
+            <p className="title is-4">{post?.post?.user?.user?.first_name} {post?.post?.user?.user?.last_name}</p>
+            <p className="subtitle is-6">@{post?.post?.user?.user?.username}</p>
           </div>
         </div>
 
@@ -93,11 +102,12 @@ export const PostDetails = ({ userId }) => {
                 return <span>
                   <button onClick={(() => {
                     let newReaction = { reaction_id: reaction.id }
-
                     addReaction(postId, newReaction)
-                  })}>
+                      .then(window.location.reload())
+                  }
+                  )}>
                     <img className="reaction" key={`reaction--${reaction.id}`} src={reaction.image_url} alt={reaction.label} /></button>
-                  Count:
+                  Count: {getReactionCount(reaction)}
                 </span>
               })
             }
@@ -113,32 +123,7 @@ export const PostDetails = ({ userId }) => {
         }
         {
           staff === 'true' ? <>
-
-            {post?.approved === false ? <>
-              <button style={{ background: "#2CB71E" }} onClick={(evt) => {
-                evt.preventDefault()
-                const postData = {
-                  ...post,
-                  category_id: post.category.id,
-                  tags: tagsForPost,
-                  approved: true
-                }
-                updatePost(postId, postData).then(() => {
-                  navigate(`/posts`)
-                })
-              }}>Approve Post</button>
-              <button style={{ background: "#D1483F" }} onClick={() => {
-                deletePost(postId).then(() => {
-                  navigate(`/posts`)
-                })
-              }}>Deny Post</button>
-            </> : <button style={{ background: "#D1483F" }} onClick={() => {
-              deletePost(postId).then(() => {
-                navigate(`/posts`)
-              })
-            }}>Unapprove Post</button>}
-
-            {post?.approved === false ? <>
+            {post?.post?.approved === false ? <>
               <button style={{ background: "#2CB71E" }} onClick={(evt) => {
                 evt.preventDefault()
                 const postData = {
@@ -157,11 +142,9 @@ export const PostDetails = ({ userId }) => {
                 })
               }}>Deny Post</button>
             </> : showDelete()}
-
           </> : ""
         }
       </footer>
     </div>
-  </section>
+  </section >
 }
-
